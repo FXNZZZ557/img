@@ -1,0 +1,4824 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07070b">
+<title>FXNZZ STORE — Gaming Service</title>
+
+<style>
+:root{
+    --bg:#07070b;
+    --bg2:#0d0d14;
+    --panel:rgba(20,20,30,.72);
+    --panel2:rgba(28,28,40,.86);
+    --line:rgba(255,255,255,.09);
+    --text:#f4f4f7;
+    --muted:#8e8e9d;
+    --accent:#ff2d72;
+    --accent2:#a855f7;
+    --good:#35e69a;
+    --warning:#ffc857;
+    --danger:#ff526f;
+    --radius:22px;
+    --shadow:0 20px 70px rgba(0,0,0,.35);
+}
+
+/* =========================
+   BASE
+========================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+    overflow-x:clip;
+    overflow-y:auto;
+}
+
+body{
+    min-height:100vh;
+    overflow-x:clip;
+    overflow-y:auto;
+    touch-action:pan-y;
+    background:
+        radial-gradient(circle at 15% 10%,rgba(255,45,114,.13),transparent 28%),
+        radial-gradient(circle at 85% 20%,rgba(168,85,247,.12),transparent 30%),
+        linear-gradient(145deg,#06060a,#0a0a10 50%,#08080d);
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+/* subtle ambient grid */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.25;
+    background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:42px 42px;
+    mask-image:linear-gradient(to bottom,black,transparent 88%);
+    z-index:-3;
+}
+
+/* ambient scanline */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.035;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,.8) 0,
+            rgba(255,255,255,.8) 1px,
+            transparent 1px,
+            transparent 5px
+        );
+    z-index:9998;
+}
+
+/* ambient orb */
+.ambient-orb{
+    position:fixed;
+    width:520px;
+    height:520px;
+    border-radius:50%;
+    right:-180px;
+    top:-170px;
+    background:radial-gradient(
+        circle,
+        rgba(255,45,114,.075),
+        transparent 67%
+    );
+    filter:blur(20px);
+    pointer-events:none;
+    z-index:-2;
+    animation:orbMove 12s ease-in-out infinite alternate;
+}
+
+@keyframes orbMove{
+    from{
+        transform:translate(0,0);
+    }
+    to{
+        transform:translate(-100px,130px);
+    }
+}
+
+/* subtle geometric particles */
+.ambient-particles{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-1;
+    overflow:hidden;
+}
+
+.ambient-particles i{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:rgba(255,255,255,.16);
+    animation:particleFloat linear infinite;
+}
+
+.ambient-particles i:nth-child(1){left:8%;top:30%;animation-duration:11s}
+.ambient-particles i:nth-child(2){left:18%;top:70%;animation-duration:15s}
+.ambient-particles i:nth-child(3){left:33%;top:18%;animation-duration:13s}
+.ambient-particles i:nth-child(4){left:49%;top:82%;animation-duration:17s}
+.ambient-particles i:nth-child(5){left:62%;top:32%;animation-duration:12s}
+.ambient-particles i:nth-child(6){left:74%;top:68%;animation-duration:16s}
+.ambient-particles i:nth-child(7){left:86%;top:24%;animation-duration:14s}
+.ambient-particles i:nth-child(8){left:93%;top:80%;animation-duration:18s}
+
+@keyframes particleFloat{
+    0%{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    20%{
+        opacity:.6;
+    }
+    80%{
+        opacity:.25;
+    }
+    100%{
+        opacity:0;
+        transform:translateY(-120px);
+    }
+}
+
+/* =========================
+   ENTRY
+========================= */
+
+.entry{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle at center,rgba(255,45,114,.12),transparent 38%),
+        #06060a;
+    transition:opacity .8s ease,visibility .8s ease;
+}
+
+.entry.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.entry-box{
+    width:min(600px,90%);
+    text-align:center;
+    animation:entryUp 1s ease;
+}
+
+@keyframes entryUp{
+    from{
+        opacity:0;
+        transform:translateY(35px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.logo-mini{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:8px 14px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:#bbb;
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    background:rgba(255,255,255,.03);
+    margin-bottom:28px;
+}
+
+.live-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--good);
+    box-shadow:0 0 15px var(--good);
+    animation:pulse 1.8s infinite;
+}
+
+@keyframes pulse{
+    50%{
+        opacity:.4;
+        transform:scale(.7);
+    }
+}
+
+
+/* =========================
+   FXNZZ CINEMATIC ENTRY
+========================= */
+
+.entry h1{
+    position:relative;
+    margin:0;
+    font-size:clamp(48px,10vw,92px);
+    line-height:.9;
+    letter-spacing:-5px;
+    font-weight:900;
+    font-style:italic;
+    color:#fff;
+    filter:drop-shadow(0 0 24px rgba(255,255,255,.10));
+}
+
+.fx-title{
+    position:relative;
+    display:inline-block;
+    min-width:6ch;
+    isolation:isolate;
+}
+
+.fx-title .fx-f{
+    display:inline-block;
+    color:#fff;
+    text-shadow:
+        3px 0 0 #050505,
+        -2px 0 0 #050505,
+        0 0 22px rgba(255,255,255,.35);
+    opacity:0;
+    transform:translateY(22px) scale(.72) skewX(-8deg);
+    animation:fxFPop .78s cubic-bezier(.16,.82,.24,1) .12s forwards;
+}
+
+.fx-title .fx-full{
+    display:inline-flex;
+    align-items:baseline;
+    gap:0;
+    opacity:0;
+    transform:translateX(-42px) skewX(-12deg);
+    animation:fxFullReveal .72s cubic-bezier(.2,.75,.2,1) .86s forwards;
+}
+
+.fx-title .fx-brand{
+    color:#fff;
+    font-style:italic;
+    text-shadow:
+        4px 0 0 #050505,
+        -2px 0 0 #050505,
+        0 0 20px rgba(255,255,255,.18);
+}
+
+.fx-title .fx-dot{
+    color:#050505;
+    font-style:italic;
+    text-shadow:2px 0 0 #fff;
+}
+
+.fx-title .fx-store{
+    color:#ff2d72;
+    font-style:normal;
+    letter-spacing:-4px;
+    text-shadow:
+        3px 0 0 #050505,
+        0 0 24px rgba(255,45,114,.25);
+}
+
+/* Black lightning / slash layer */
+.fx-title::before{
+    content:"";
+    position:absolute;
+    z-index:8;
+    top:-32%;
+    left:-18%;
+    width:150%;
+    height:165%;
+    opacity:0;
+    pointer-events:none;
+    transform:translateX(-115%) skewX(-24deg);
+    background:
+        linear-gradient(
+            112deg,
+            transparent 0 40%,
+            rgba(0,0,0,0) 42%,
+            #050505 44%,
+            #000 46%,
+            rgba(0,0,0,.92) 48%,
+            transparent 50% 100%
+        ),
+        linear-gradient(
+            105deg,
+            transparent 0 51%,
+            rgba(0,0,0,.95) 52%,
+            transparent 54% 100%
+        );
+    filter:drop-shadow(0 0 5px rgba(0,0,0,.9));
+}
+
+.fx-title::after{
+    content:"";
+    position:absolute;
+    z-index:7;
+    left:-12%;
+    top:48%;
+    width:125%;
+    height:3px;
+    opacity:0;
+    pointer-events:none;
+    transform:translateX(-105%) rotate(-10deg);
+    background:#000;
+    box-shadow:
+        0 0 8px rgba(0,0,0,.9),
+        0 0 20px rgba(0,0,0,.55);
+}
+
+.fx-title.fx-slash::before{
+    animation:fxBlackLightning .66s cubic-bezier(.15,.7,.18,1) forwards;
+}
+
+.fx-title.fx-slash::after{
+    animation:fxBlackSlash .54s cubic-bezier(.18,.78,.18,1) .03s forwards;
+}
+
+.fx-title.fx-slash .fx-full{
+    animation:fxNameSlideOut .62s cubic-bezier(.2,.75,.12,1) forwards;
+}
+
+@keyframes fxFPop{
+    0%{
+        opacity:0;
+        transform:translateY(24px) scale(.62) skewX(-10deg);
+    }
+    55%{
+        opacity:1;
+        transform:translateY(-4px) scale(1.06) skewX(-8deg);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0) scale(1) skewX(-8deg);
+    }
+}
+
+@keyframes fxFullReveal{
+    0%{
+        opacity:0;
+        transform:translateX(-42px) skewX(-12deg);
+        clip-path:inset(0 100% 0 0);
+    }
+    45%{
+        opacity:1;
+    }
+    100%{
+        opacity:1;
+        transform:translateX(0) skewX(-8deg);
+        clip-path:inset(0 0 0 0);
+    }
+}
+
+@keyframes fxBlackLightning{
+    0%{
+        opacity:0;
+        transform:translateX(-115%) skewX(-24deg);
+    }
+    18%{opacity:1;}
+    35%{
+        opacity:1;
+        transform:translateX(-15%) skewX(-24deg);
+    }
+    55%{
+        opacity:.95;
+        transform:translateX(30%) skewX(-24deg);
+    }
+    100%{
+        opacity:0;
+        transform:translateX(120%) skewX(-24deg);
+    }
+}
+
+@keyframes fxBlackSlash{
+    0%{
+        opacity:0;
+        transform:translateX(-105%) rotate(-10deg);
+    }
+    18%{opacity:1;}
+    100%{
+        opacity:0;
+        transform:translateX(115%) rotate(-10deg);
+    }
+}
+
+@keyframes fxNameSlideOut{
+    0%{
+        opacity:1;
+        transform:translateX(0) skewX(-8deg);
+        filter:none;
+    }
+    45%{
+        opacity:1;
+        transform:translateX(26px) skewX(-12deg);
+    }
+    100%{
+        opacity:0;
+        transform:translateX(480px) skewX(-18deg);
+        filter:blur(3px);
+    }
+}
+
+.fx-title.fx-slash .fx-f{
+    animation:fxFExit .48s cubic-bezier(.2,.75,.15,1) forwards;
+}
+
+@keyframes fxFExit{
+    0%{opacity:1; transform:translateX(0) scale(1) skewX(-8deg);}
+    100%{opacity:0; transform:translateX(160px) scale(.9) skewX(-18deg);}
+}
+
+@media(max-width:650px){
+    .entry h1{
+        font-size:clamp(43px,15vw,70px);
+        letter-spacing:-3px;
+    }
+
+    .fx-title .fx-store{
+        letter-spacing:-3px;
+    }
+}
+
+/* =========================
+   WHITE BLOOM SLASH
+========================= */
+
+.entry-title-wrap{
+    position:relative;
+    display:inline-block;
+}
+
+.entry-title-wrap::after{
+    content:"";
+    position:absolute;
+    pointer-events:none;
+    z-index:5;
+    top:-35%;
+    left:-22%;
+    width:17%;
+    height:170%;
+    opacity:0;
+    transform:skewX(-20deg) translateX(-80px);
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255,255,255,.1) 15%,
+            rgba(255,255,255,.92) 45%,
+            #fff 55%,
+            rgba(255,255,255,.2) 75%,
+            transparent 100%
+        );
+    filter:blur(8px);
+}
+
+.entry-title-wrap.slashing::after{
+    animation:whiteBloomSlash .72s cubic-bezier(.2,.7,.2,1) forwards;
+}
+
+.entry-title-wrap.slashing::before{
+    content:"";
+    position:absolute;
+    pointer-events:none;
+    z-index:4;
+    inset:-12% -6%;
+    opacity:0;
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(255,255,255,.85) 0%,
+            rgba(255,255,255,.35) 20%,
+            transparent 58%
+        );
+    filter:blur(18px);
+    mix-blend-mode:screen;
+    animation:bloomFlash .72s ease forwards;
+}
+
+.entry-title-wrap.slashing h1{
+    animation:titleWhiteFlash .72s ease forwards;
+}
+
+@keyframes whiteBloomSlash{
+    0%{opacity:0;transform:skewX(-20deg) translateX(-90px);}
+    10%{opacity:1;}
+    45%{opacity:1;}
+    100%{opacity:0;transform:skewX(-20deg) translateX(680px);}
+}
+
+@keyframes bloomFlash{
+    0%,15%{opacity:0;transform:scale(.96);}
+    42%{opacity:.95;transform:scale(1.03);}
+    65%{opacity:.25;transform:scale(1);}
+    100%{opacity:0;}
+}
+
+
+
+/* =========================
+   LOOPING NAV BRAND
+========================= */
+
+.nav .brand{
+    position:relative;
+    display:inline-block;
+    overflow:visible;
+    font-style:italic;
+    font-weight:900;
+    letter-spacing:-1.5px;
+    color:#fff;
+    text-shadow:
+        2px 0 0 #050505,
+        -1px 0 0 #050505;
+    animation:navBrandPulse 3.8s ease-in-out infinite;
+}
+
+.nav .brand::after{
+    content:"";
+    position:absolute;
+    z-index:2;
+    top:-35%;
+    left:-18%;
+    width:18%;
+    height:170%;
+    pointer-events:none;
+    opacity:0;
+    transform:translateX(-90px) skewX(-20deg);
+    background:linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0,0,0,.15) 15%,
+        #050505 45%,
+        #000 55%,
+        rgba(0,0,0,.15) 78%,
+        transparent 100%
+    );
+    filter:blur(2px);
+    animation:navBrandSlash 3.8s cubic-bezier(.18,.7,.18,1) infinite;
+}
+
+.nav .brand::before{
+    content:"";
+    position:absolute;
+    z-index:-1;
+    inset:-9px -12px;
+    pointer-events:none;
+    opacity:0;
+    background:radial-gradient(
+        ellipse at center,
+        rgba(255,45,114,.22),
+        transparent 68%
+    );
+    filter:blur(8px);
+    animation:navBrandGlow 3.8s ease-in-out infinite;
+}
+
+.nav .brand span{
+    color:#ff2d72;
+    font-style:italic;
+    text-shadow:
+        2px 0 0 #050505,
+        0 0 10px rgba(255,45,114,.18);
+}
+
+@keyframes navBrandPulse{
+    0%,68%,100%{
+        opacity:1;
+        transform:translateX(0) skewX(-8deg);
+        filter:none;
+    }
+    73%{
+        opacity:1;
+        transform:translateX(1px) skewX(-10deg);
+    }
+    78%{
+        opacity:.82;
+        transform:translateX(2px) skewX(-12deg);
+    }
+    84%{
+        opacity:1;
+        transform:translateX(0) skewX(-8deg);
+    }
+}
+
+@keyframes navBrandSlash{
+    0%,67%{
+        opacity:0;
+        transform:translateX(-95px) skewX(-20deg);
+    }
+    70%{
+        opacity:1;
+    }
+    77%{
+        opacity:1;
+        transform:translateX(125px) skewX(-20deg);
+    }
+    82%,100%{
+        opacity:0;
+        transform:translateX(125px) skewX(-20deg);
+    }
+}
+
+@keyframes navBrandGlow{
+    0%,67%,100%{opacity:0;transform:scale(.94);}
+    73%{opacity:.9;transform:scale(1.03);}
+    82%{opacity:.18;transform:scale(1);}
+}
+
+@media(prefers-reduced-motion:reduce){
+    .nav .brand,
+    .nav .brand::before,
+    .nav .brand::after{
+        animation:none;
+    }
+}
+
+/* =========================
+   APP
+========================= */
+
+.app{
+    min-height:100vh;
+    opacity:0;
+    transition:1s ease;
+}
+
+.app.ready{
+    opacity:1;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:1000;
+    height:72px;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 5%;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    background:rgba(7,7,11,.72);
+    backdrop-filter:blur(18px);
+}
+
+.brand{
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:-.5px;
+}
+
+.brand span{
+    color:var(--accent);
+}
+
+.nav-links{
+    position:relative;
+    display:flex;
+    gap:7px;
+}
+
+.nav-links button{
+    position:relative;
+    border:0;
+    background:transparent;
+    color:#aaa;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.nav-links button:hover{
+    color:white;
+    background:rgba(255,255,255,.06);
+}
+
+.nav-links button.active{
+    color:white;
+}
+
+.nav-indicator{
+    position:absolute;
+    bottom:-4px;
+    left:0;
+    height:2px;
+    width:0;
+    border-radius:10px;
+    background:linear-gradient(
+        90deg,
+        var(--accent),
+        var(--accent2)
+    );
+    box-shadow:0 0 12px rgba(255,45,114,.65);
+    transition:
+        left .3s cubic-bezier(.2,.8,.2,1),
+        width .3s cubic-bezier(.2,.8,.2,1);
+    pointer-events:none;
+}
+
+.nav-actions{
+    display:flex;
+    align-items:center;
+    gap:0;
+}
+
+.nav-order{
+    position:relative;
+    border:1px solid rgba(255,45,114,.3);
+    background:rgba(255,45,114,.08);
+    color:#ff8db0;
+    border-radius:12px;
+    padding:10px 14px;
+    cursor:pointer;
+}
+
+.cart-count{
+    position:absolute;
+    top:-7px;
+    right:-7px;
+    min-width:18px;
+    height:18px;
+    padding:0 5px;
+    border-radius:20px;
+    display:grid;
+    place-items:center;
+    font-size:10px;
+    font-weight:800;
+    color:white;
+    background:var(--accent);
+}
+
+/* =========================
+   MAIN
+========================= */
+
+main{
+    width:min(1400px,90%);
+    margin:auto;
+    padding-top:72px;
+}
+
+section{
+    padding:90px 0;
+    scroll-margin-top:88px;
+}
+
+/* Floating cart: checkout stays reachable from every scroll position. */
+.floating-cart{
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    z-index:1100;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 18px;
+    border:1px solid rgba(255,45,114,.48);
+    border-radius:15px;
+    color:#fff;
+    background:linear-gradient(135deg,rgba(255,45,114,.96),rgba(123,44,255,.94));
+    box-shadow:0 12px 36px rgba(0,0,0,.4),0 0 22px rgba(255,45,114,.18);
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.7px;
+    cursor:pointer;
+    transition:transform .2s ease,box-shadow .2s ease;
+}
+.floating-cart:hover{
+    transform:translateY(-3px);
+    box-shadow:0 16px 42px rgba(0,0,0,.46),0 0 28px rgba(255,45,114,.25);
+}
+.floating-cart-count{
+    display:grid;
+    place-items:center;
+    min-width:22px;
+    height:22px;
+    padding:0 5px;
+    border-radius:50px;
+    background:#fff;
+    color:#151018;
+    font-size:11px;
+    font-weight:900;
+}
+
+.hero{
+    min-height:620px;
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:50px;
+    align-items:center;
+}
+
+.eyebrow{
+    color:#ff739a;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+}
+
+.hero h2{
+    font-size:clamp(42px,6vw,76px);
+    line-height:.98;
+    letter-spacing:-4px;
+    max-width:800px;
+}
+
+.hero h2 span{
+    background:linear-gradient(
+        100deg,
+        #ff477f,
+        #b66aff
+    );
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero-hook{
+    margin-top:17px;
+    max-width:610px;
+    color:#f4f0f4;
+    font-size:clamp(15px,1.6vw,19px);
+    line-height:1.55;
+    font-weight:750;
+    letter-spacing:-.25px;
+}
+
+.hero-text{
+    margin-top:12px;
+    max-width:630px;
+    color:var(--muted);
+    line-height:1.8;
+}
+
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:30px;
+}
+
+.btn{
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.045);
+    color:white;
+    border-radius:13px;
+    padding:13px 18px;
+    cursor:pointer;
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+    font-weight:700;
+    will-change:transform;
+}
+
+.btn:hover{
+    border-color:rgba(255,255,255,.18);
+}
+
+.btn.primary{
+    border:0;
+    background:linear-gradient(
+        135deg,
+        var(--accent),
+        #b22aff
+    );
+    box-shadow:0 12px 35px rgba(255,45,114,.2);
+}
+
+/* ripple */
+.ripple{
+    position:absolute;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:rgba(255,255,255,.55);
+    transform:translate(-50%,-50%) scale(0);
+    pointer-events:none;
+    animation:ripple .28s ease-out forwards;
+}
+
+@keyframes ripple{
+    to{
+        transform:translate(-50%,-50%) scale(15);
+        opacity:0;
+    }
+}
+
+/* =========================
+   HERO CARD
+========================= */
+
+.hero-card{
+    min-height:400px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+    border-radius:30px;
+    padding:30px;
+    background:
+        radial-gradient(
+            circle at 80% 10%,
+            rgba(168,85,247,.25),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 10% 90%,
+            rgba(255,45,114,.16),
+            transparent 40%
+        ),
+        rgba(255,255,255,.035);
+    box-shadow:var(--shadow);
+}
+
+.hero-card::before{
+    content:"FXNZZ";
+    position:absolute;
+    font-size:120px;
+    font-weight:1000;
+    color:rgba(255,255,255,.025);
+    transform:rotate(-18deg);
+    right:-40px;
+    bottom:40px;
+}
+
+.status-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:999px;
+    background:rgba(53,230,154,.08);
+    border:1px solid rgba(53,230,154,.2);
+    color:#74efbc;
+    font-size:11px;
+    font-weight:800;
+}
+
+.hero-card h3{
+    margin-top:55px;
+    font-size:32px;
+    letter-spacing:-1px;
+}
+
+.hero-card p{
+    color:var(--muted);
+    line-height:1.7;
+    margin-top:12px;
+}
+
+.fake-wave{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:110px;
+    background:
+        linear-gradient(
+            135deg,
+            transparent 30%,
+            rgba(255,45,114,.08)
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 45px,
+            rgba(255,255,255,.035) 46px 47px
+        );
+    clip-path:polygon(
+        0 65%,
+        15% 45%,
+        30% 58%,
+        45% 25%,
+        60% 50%,
+        75% 20%,
+        100% 42%,
+        100% 100%,
+        0 100%
+    );
+}
+
+/* =========================
+   SECTION HEADER
+========================= */
+
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.section-head h2{
+    font-size:34px;
+    letter-spacing:-1.5px;
+}
+
+.section-head p{
+    max-width:600px;
+    color:var(--muted);
+    line-height:1.6;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.stat{
+    padding:23px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:var(--panel);
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.stat-value{
+    margin-top:9px;
+    font-size:29px;
+    font-weight:900;
+}
+
+.stat small{
+    display:block;
+    margin-top:7px;
+    color:#6f6f7d;
+}
+
+/* =========================
+   GAME
+========================= */
+
+.game-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.game-card{
+    position:relative;
+    min-height:270px;
+    overflow:hidden;
+    padding:30px;
+    border:1px solid var(--line);
+    border-radius:24px;
+    background:linear-gradient(
+        145deg,
+        rgba(255,255,255,.06),
+        rgba(255,255,255,.025)
+    );
+    transition:.3s;
+}
+
+.game-card:hover{
+    transform:translateY(-5px);
+    border-color:rgba(255,45,114,.25);
+}
+
+.game-code{
+    color:#ff6f98;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.game-card h3{
+    margin-top:45px;
+    font-size:31px;
+}
+
+.game-card p{
+    max-width:500px;
+    color:var(--muted);
+    margin-top:10px;
+    line-height:1.6;
+}
+
+.game-number{
+    position:absolute;
+    right:25px;
+    top:20px;
+    font-size:90px;
+    line-height:1;
+    font-weight:1000;
+    color:rgba(255,255,255,.035);
+}
+
+/* =========================
+   FILTER
+========================= */
+
+.filter{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:22px;
+}
+
+.filter button{
+    padding:9px 13px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    color:#999;
+    background:rgba(255,255,255,.03);
+    cursor:pointer;
+    transition:.2s;
+}
+
+.filter button.active{
+    color:white;
+    border-color:rgba(255,45,114,.4);
+    background:rgba(255,45,114,.1);
+}
+
+/* =========================
+   CARD SPOTLIGHT
+========================= */
+
+.package-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.package{
+    --spot-x:50%;
+    --spot-y:50%;
+
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    min-height:245px;
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:
+        radial-gradient(
+            260px circle at var(--spot-x) var(--spot-y),
+            rgba(255,45,114,.12),
+            transparent 65%
+        ),
+        var(--panel);
+    transition:
+        transform .25s ease,
+        opacity .25s ease,
+        filter .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+.package:hover,
+.package.spotlight-active{
+    transform:translateY(-5px);
+    border-color:rgba(255,45,114,.32);
+    box-shadow:
+        0 18px 55px rgba(0,0,0,.25),
+        0 0 28px rgba(255,45,114,.07);
+}
+
+.package-grid.spotlight-mode .package:not(.spotlight-active){
+    opacity:.48;
+    filter:saturate(.65);
+}
+
+
+/* PRODUCT IMAGE — localized to service cards */
+.package-image-wrap{
+    width:100%;
+    aspect-ratio:16 / 9;
+    margin-bottom:14px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    background:#101019;
+}
+.package-image{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+@media(max-width:650px){
+    .package-image-wrap{ aspect-ratio:4 / 3; margin-bottom:8px; border-radius:9px; }
+}
+
+.package-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:start;
+    gap:10px;
+}
+
+.package-category{
+    color:#ff6c97;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1.3px;
+}
+
+.badge{
+    padding:5px 8px;
+    border-radius:7px;
+    background:rgba(255,255,255,.06);
+    color:#aaa;
+    font-size:9px;
+    font-weight:800;
+}
+
+.package h3{
+    margin-top:22px;
+    font-size:18px;
+    line-height:1.35;
+}
+
+.package-desc{
+    margin-top:9px;
+    color:#858592;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.price{
+    margin-top:auto;
+    padding-top:20px;
+    font-size:23px;
+    font-weight:900;
+}
+
+.price span{
+    color:#777;
+    font-size:11px;
+    font-weight:500;
+}
+
+.package .btn{
+    margin-top:14px;
+    width:100%;
+}
+
+/* =========================
+   SPECIAL
+========================= */
+
+.special{
+    position:relative;
+    overflow:hidden;
+    padding:30px;
+    border-radius:25px;
+    border:1px solid rgba(255,45,114,.2);
+    background:
+        radial-gradient(
+            circle at 90% 0,
+            rgba(255,45,114,.15),
+            transparent 40%
+        ),
+        rgba(255,45,114,.045);
+}
+
+.special h3{
+    margin:12px 0 7px;
+    font-size:26px;
+}
+
+.special p{
+    color:var(--muted);
+    line-height:1.6;
+}
+
+/* =========================
+   ORDER
+========================= */
+
+.order-layout{
+    display:grid;
+    grid-template-columns:1fr .7fr;
+    gap:20px;
+}
+
+.panel{
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:24px;
+    background:var(--panel);
+}
+
+.panel h3{
+    margin-bottom:20px;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    color:#aaa;
+    font-size:11px;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:11px;
+    padding:12px;
+    color:white;
+    outline:none;
+    background:rgba(0,0,0,.25);
+}
+
+.form-group textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:rgba(255,45,114,.5);
+}
+
+/* =========================
+   TRACKER
+/* =========================
+   TRACKER
+========================= */
+
+.tracker{
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+}
+
+.tracker::before{
+    content:"";
+    position:absolute;
+    top:18px;
+    left:8%;
+    right:8%;
+    height:2px;
+    background:var(--line);
+}
+
+.step{
+    position:relative;
+    z-index:1;
+    text-align:center;
+}
+
+.step-dot{
+    width:36px;
+    height:36px;
+    margin:auto;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:#171720;
+    border:1px solid var(--line);
+    color:#666;
+    font-size:11px;
+    font-weight:900;
+    transition:.25s;
+}
+
+.step.done .step-dot{
+    color:white;
+    background:var(--accent);
+    border-color:var(--accent);
+    box-shadow:0 0 22px rgba(255,45,114,.25);
+}
+
+.step span{
+    display:block;
+    margin-top:10px;
+    color:#777;
+    font-size:10px;
+}
+
+.step.done span{
+    color:#ccc;
+}
+
+/* =========================
+   ACTIVITY
+========================= */
+
+.activity{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.activity-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.activity-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:13px;
+    background:rgba(255,255,255,.025);
+}
+
+.activity-left{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.activity-icon{
+    width:32px;
+    height:32px;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    background:rgba(255,45,114,.1);
+    color:#ff7ba0;
+    font-size:9px;
+    font-weight:900;
+}
+
+.activity-item strong{
+    display:block;
+    font-size:12px;
+}
+
+.activity-item small{
+    color:#6f6f7d;
+}
+
+.activity-price{
+    color:#aaa;
+    font-size:11px;
+}
+
+/* =========================
+   TESTIMONIAL
+========================= */
+
+.testimonial-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.testimonial{
+    padding:23px;
+    border:1px solid var(--line);
+    border-radius:19px;
+    background:var(--panel);
+}
+
+.stars{
+    color:#ffc857;
+    letter-spacing:2px;
+}
+
+.testimonial p{
+    margin-top:17px;
+    color:#a5a5b0;
+    line-height:1.7;
+    font-size:13px;
+}
+
+.user{
+    margin-top:20px;
+    display:flex;
+    justify-content:space-between;
+    color:#ddd;
+    font-size:12px;
+}
+
+.user span{
+    color:#666;
+}
+
+/* =========================
+   FAQ
+========================= */
+
+.faq{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.faq-item{
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    background:rgba(255,255,255,.025);
+}
+
+.faq-q{
+    width:100%;
+    padding:18px;
+    display:flex;
+    justify-content:space-between;
+    color:white;
+    border:0;
+    background:transparent;
+    cursor:pointer;
+    text-align:left;
+    font-weight:700;
+}
+
+.faq-a{
+    max-height:0;
+    overflow:hidden;
+    padding:0 18px;
+    color:#858592;
+    line-height:1.7;
+    font-size:13px;
+    transition:.3s;
+}
+
+.faq-item.open .faq-a{
+    max-height:150px;
+    padding-bottom:18px;
+}
+
+/* =========================
+   SUPPORT
+========================= */
+
+.support{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.support-card{
+    padding:25px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:var(--panel);
+}
+
+.support-card h3{
+    margin-bottom:8px;
+}
+
+.support-card p{
+    color:var(--muted);
+    line-height:1.6;
+    font-size:13px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    border-top:1px solid var(--line);
+    padding:35px 5%;
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    color:#666;
+    font-size:11px;
+}
+
+/* =========================
+   CART
+========================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:300;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(8px);
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+}
+
+.overlay.show{
+    opacity:1;
+    visibility:visible;
+}
+
+html.cart-open,
+body.cart-open{
+    overflow:hidden;
+    overscroll-behavior:none;
+}
+
+.overlay.show{
+    touch-action:none;
+}
+
+.drawer{
+    touch-action:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+.drawer{
+    position:absolute;
+    right:0;
+    top:0;
+    bottom:0;
+    width:min(440px,92%);
+    padding:25px;
+    background:#0c0c12;
+    border-left:1px solid var(--line);
+    transform:translateX(100%);
+    transition:.35s ease;
+    overflow:auto;
+}
+
+.overlay.show .drawer{
+    transform:none;
+}
+
+.drawer-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:25px;
+}
+
+.close{
+    border:0;
+    background:rgba(255,255,255,.06);
+    color:white;
+    width:35px;
+    height:35px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.cart-empty{
+    text-align:center;
+    padding:70px 20px;
+    color:#666;
+}
+
+.cart-item{
+    padding:18px 0;
+    border-bottom:1px solid var(--line);
+}
+
+.cart-item strong{
+    display:block;
+    font-size:14px;
+}
+
+.cart-item small{
+    color:#666;
+}
+
+.cart-item-bottom{
+    display:flex;
+    justify-content:space-between;
+    margin-top:12px;
+}
+
+.remove{
+    border:0;
+    background:none;
+    color:#ff607f;
+    cursor:pointer;
+}
+
+.drawer-total{
+    display:flex;
+    justify-content:space-between;
+    padding:20px 0;
+    font-weight:800;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+    z-index:1000;
+    left:50%;
+    bottom:25px;
+    transform:translate(-50%,30px);
+    opacity:0;
+    pointer-events:none;
+    padding:13px 17px;
+    border:1px solid var(--line);
+    border-radius:13px;
+    background:#15151e;
+    box-shadow:var(--shadow);
+    font-size:12px;
+    transition:.3s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+
+/* =========================
+   MUSIC CONTROL
+========================= */
+.music-control{
+    width:36px;
+    height:36px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    margin-left:8px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    background:rgba(255,255,255,.035);
+    color:#aaa;
+    cursor:pointer;
+    transition:transform .2s ease,border-color .2s ease,color .2s ease,background .2s ease;
+}
+.music-control:hover{
+    transform:translateY(-2px);
+    border-color:rgba(255,45,114,.4);
+    color:#fff;
+    background:rgba(255,45,114,.08);
+}
+.music-control.playing{
+    color:#ff5c8d;
+    border-color:rgba(255,45,114,.45);
+    box-shadow:0 0 18px rgba(255,45,114,.12);
+}
+.music-control span{
+    font-size:16px;
+    line-height:1;
+}
+
+/* =========================
+   MOBILE NAV
+========================= */
+
+.mobile-nav{
+    display:none;
+}
+
+/* =========================
+   EMPTY PACKAGE SLOTS
+========================= */
+
+.package.empty-slot{
+    opacity:.62;
+    background:
+        linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,255,255,.012)),
+        var(--panel);
+    border-style:dashed;
+}
+
+.package.empty-slot:hover{
+    transform:none;
+    border-color:var(--line);
+    box-shadow:none;
+}
+
+.package.empty-slot .package-category{
+    color:#777;
+}
+
+.package.empty-slot .price{
+    color:#777;
+}
+
+.package .btn:disabled{
+    cursor:not-allowed;
+    opacity:.5;
+    transform:none !important;
+}
+
+/* =========================
+   SOCIAL MEDIA
+========================= */
+
+.social-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    justify-content:flex-end;
+}
+
+.social-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:9px 12px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    color:#aaa;
+    text-decoration:none;
+    background:rgba(255,255,255,.03);
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        background .2s ease;
+}
+
+.social-link:hover{
+    transform:translateY(-2px);
+    color:white;
+    border-color:rgba(255,45,114,.3);
+    background:rgba(255,45,114,.06);
+}
+
+.social-link b{
+    color:#fff;
+    font-size:11px;
+}
+
+.social-link small{
+    color:#666;
+    font-size:9px;
+}
+
+@media(max-width:650px){
+    .nav{
+        padding:0 12px;
+        height:64px;
+    }
+    main{padding-top:64px;}
+    section{scroll-margin-top:76px;}
+    .floating-cart{
+        right:12px;
+        bottom:calc(12px + env(safe-area-inset-bottom, 0px));
+        padding:12px 14px;
+        border-radius:13px;
+        font-size:11px;
+    }
+    .brand{
+        font-size:12px;
+    }
+    .nav-order{
+        padding:9px 10px;
+        font-size:9px;
+    }
+    .music-control{
+        width:32px;
+        height:32px;
+        margin-left:5px;
+        border-radius:9px;
+    }
+
+    .social-links{
+        justify-content:flex-start;
+    }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:950px){
+
+    .hero{
+        grid-template-columns:1fr;
+    }
+
+    .hero-card{
+        min-height:300px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .package-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .order-layout{
+        grid-template-columns:1fr;
+    }
+
+    .testimonial-grid{
+        grid-template-columns:1fr;
+    }
+
+    .activity{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:650px){
+
+    .nav{
+        padding:0 18px;
+    }
+
+    .nav-links{
+        display:none;
+    }
+
+    main{
+        width:min(92%,600px);
+    }
+
+    section{
+        padding:65px 0;
+    }
+
+    .hero{
+        min-height:560px;
+        gap:25px;
+    }
+
+    .hero h2{
+        font-size:43px;
+        letter-spacing:-2.5px;
+    }
+
+    .hero-card{
+        min-height:260px;
+    }
+
+    .game-grid{
+        grid-template-columns:1fr;
+    }
+
+    /*
+       KHUSUS MOBILE:
+       3 PACKAGE PER ROW.
+       Width tiap card dijaga cukup lebar,
+       typography diperkecil secara terukur,
+       bukan dibuat sekecil mungkin.
+    */
+
+    .package-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:6px;
+    }
+
+    .package{
+        min-height:225px;
+        padding:10px 7px;
+        border-radius:14px;
+    }
+
+    .package-category{
+        font-size:8px;
+        letter-spacing:.7px;
+        white-space:nowrap;
+    }
+
+    .package h3{
+        font-size:11px;
+        line-height:1.25;
+        margin-top:11px;
+        letter-spacing:-.15px;
+    }
+
+    .package-desc{
+        font-size:8px;
+        line-height:1.35;
+        margin-top:5px;
+    }
+
+    .price{
+        font-size:12px;
+        padding-top:8px;
+        letter-spacing:-.3px;
+    }
+
+    .price span{
+        display:none;
+    }
+
+    .package .btn{
+        padding:9px 3px;
+        font-size:8px;
+        line-height:1.15;
+        border-radius:9px;
+    }
+
+    .badge{
+        display:none;
+    }
+
+    .section-head{
+        display:block;
+    }
+
+    .section-head h2{
+        font-size:27px;
+        margin-bottom:8px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+    }
+
+    .stat{
+        padding:15px;
+    }
+
+    .stat-value{
+        font-size:22px;
+    }
+
+    .payment-methods{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:7px;
+    }
+
+    .payment-method{
+        min-height:90px;
+        padding:10px 4px;
+        border-radius:12px;
+    }
+
+    .payment-icon{
+        width:36px;
+        height:27px;
+        font-size:9px;
+    }
+
+    .payment-method strong{
+        font-size:11px;
+    }
+
+    .payment-method small{
+        font-size:8px;
+    }
+
+    .tracker{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .tracker::before{
+        top:18px;
+        bottom:18px;
+        left:17px;
+        width:2px;
+        height:auto;
+    }
+
+    .step{
+        display:flex;
+        align-items:center;
+        text-align:left;
+        gap:12px;
+    }
+
+    .step-dot{
+        flex-shrink:0;
+        margin:0;
+    }
+
+    .step span{
+        margin:0;
+    }
+
+    .support{
+        grid-template-columns:1fr;
+    }
+
+    footer{
+        display:block;
+    }
+
+    footer div+div{
+        margin-top:10px;
+    }
+
+    .mobile-nav{
+        display:flex;
+        position:fixed;
+        z-index:200;
+        left:10px;
+        right:10px;
+        bottom:10px;
+        height:62px;
+        border:1px solid var(--line);
+        border-radius:18px;
+        background:rgba(12,12,18,.9);
+        backdrop-filter:blur(18px);
+        box-shadow:0 15px 40px rgba(0,0,0,.4);
+        justify-content:space-around;
+        align-items:center;
+    }
+
+    .mobile-nav button{
+        border:0;
+        background:none;
+        color:#777;
+        font-size:9px;
+        cursor:pointer;
+    }
+
+    .mobile-nav button span{
+        display:block;
+        font-size:16px;
+        margin-bottom:4px;
+    }
+
+    /*
+       Magnetic effect otomatis mati karena
+       JS hanya aktif pada pointer: fine.
+    */
+}
+
+/* touch device: no hover dimming */
+@media(hover:none){
+
+    .package-grid.spotlight-mode .package:not(.spotlight-active){
+        opacity:1;
+        filter:none;
+    }
+
+    .package:hover{
+        transform:none;
+    }
+
+    .btn:hover{
+        transform:none;
+    }
+}
+
+/* FINAL PACKAGE SCALE / MOBILE GRID OVERRIDE */
+.package-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:12px;
+}
+@media(max-width:650px){
+    .package-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+        gap:6px !important;
+    }
+    .package{
+        min-width:0;
+        min-height:225px;
+        padding:10px 7px;
+    }
+    .package h3{
+        font-size:11px;
+        line-height:1.25;
+    }
+    .package-desc{
+        font-size:8px;
+        line-height:1.35;
+    }
+    .price{
+        font-size:12px;
+    }
+}
+
+
+.hero-trust{
+    position:relative;
+    z-index:2;
+}
+
+.trust-item{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:11px 12px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.025);
+    border-radius:10px;
+}
+
+.trust-item strong{
+    flex:0 0 auto;
+    min-width:82px;
+    font-size:9px;
+    letter-spacing:1.2px;
+}
+
+.trust-item span{
+    color:#777;
+    font-size:9px;
+    line-height:1.5;
+}
+
+@media(max-width:650px){
+    .trust-item{
+        gap:8px;
+        padding:10px;
+    }
+    .trust-item strong{
+        min-width:72px;
+        font-size:8px;
+    }
+    .trust-item span{
+        font-size:8px;
+    }
+}
+
+
+/* =========================
+   TEAM / MODULE STATUS / CHANGELOG
+========================= */
+.team-grid,.module-grid,.changelog-list{
+    display:grid;
+    gap:14px;
+}
+.team-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.team-card{
+    position:relative;overflow:hidden;padding:24px;
+    border:1px solid var(--line);border-radius:20px;
+    background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+}
+.team-card.owner{
+    border-color:rgba(255,45,114,.36);
+    background:radial-gradient(circle at 100% 0,rgba(255,45,114,.14),transparent 46%),var(--panel);
+}
+.team-card.worker{
+    border-color:rgba(168,85,247,.25);
+    background:radial-gradient(circle at 100% 0,rgba(168,85,247,.12),transparent 46%),var(--panel);
+}
+.team-role{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:6px 9px;border-radius:8px;margin-bottom:16px;
+    font-size:9px;font-weight:900;letter-spacing:1.2px;
+    color:#ff9ab8;background:rgba(255,45,114,.1);
+    border:1px solid rgba(255,45,114,.2);
+}
+.team-card.worker .team-role{
+    color:#d4a7ff;background:rgba(168,85,247,.1);
+    border-color:rgba(168,85,247,.25);
+}
+.team-card h3{font-size:24px;letter-spacing:-.6px}
+.team-card p{margin-top:9px;color:var(--muted);font-size:13px;line-height:1.7}
+.team-specialty{
+    margin-top:17px;padding-top:14px;border-top:1px solid var(--line);
+    color:#ddd;font-size:11px;line-height:1.6;
+}
+.module-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.module-card{
+    padding:17px;border:1px solid var(--line);border-radius:15px;background:var(--panel);
+}
+.module-card strong{display:block;font-size:13px;margin-bottom:8px}
+.module-card p{color:var(--muted);font-size:11px;line-height:1.55}
+.module-status{
+    display:inline-flex;padding:5px 8px;border-radius:7px;margin-bottom:12px;
+    font-size:9px;font-weight:900;letter-spacing:.7px;
+}
+.module-status.active{color:#79edbb;background:rgba(53,230,154,.09);border:1px solid rgba(53,230,154,.2)}
+.module-status.dev{color:#ffd27c;background:rgba(255,200,87,.09);border:1px solid rgba(255,200,87,.2)}
+.module-status.soon{color:#c9a0ff;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2)}
+.changelog-list{grid-template-columns:1fr}
+.change-item{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.change-date{color:#ff83a6;font-size:11px;font-weight:800}
+.change-item strong{font-size:12px}
+.change-item p{margin-top:5px;color:var(--muted);font-size:11px;line-height:1.6}
+.config-note{margin-top:15px;padding:16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025);color:var(--muted);font-size:11px;line-height:1.7}
+@media(max-width:950px){
+    .team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:650px){
+    .team-grid,.module-grid{grid-template-columns:1fr}
+    .team-card{padding:19px}
+    .change-item{grid-template-columns:1fr;gap:5px}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="ambient-orb"></div>
+
+<div class="ambient-particles">
+    <i></i><i></i><i></i><i></i>
+    <i></i><i></i><i></i><i></i>
+</div>
+
+<!-- =========================
+     ENTRY
+========================= -->
+
+<div class="entry" id="entry">
+
+    <div class="entry-box">
+
+        <div class="logo-mini">
+            <span class="live-dot"></span>
+            FXNZZ STORE / SYSTEM ONLINE
+        </div>
+
+        <div class="entry-title-wrap" id="entryTitle">
+            <h1 class="fx-title" aria-label="FXNZZ.STORE">
+                <span class="fx-f">F</span>
+                <span class="fx-full">
+                    <span class="fx-brand">FXNZZ</span><span class="fx-dot">.</span><span class="fx-store">STORE</span>
+                </span>
+            </h1>
+        </div>
+
+        <p>
+            Gaming service untuk Zenless Zone Zero dan
+            Punishing: Gray Raven. Pilih layanan, checkout,
+            lalu lanjutkan order dan pembayaran langsung melalui chat admin.
+        </p>
+
+        <button
+            class="enter-btn"
+            id="enterButton"
+            onclick="enterStore()">
+            ENTER STORE →
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     APP
+========================= -->
+
+<div class="app" id="app">
+
+<nav class="nav">
+
+    <div class="brand">
+        FXNZZ<span>.</span>STORE
+    </div>
+
+    <div class="nav-links">
+
+        <button
+            data-section="dashboard"
+            onclick="scrollToId('dashboard')">
+            Dashboard
+        </button>
+
+        <button
+            data-section="games"
+            onclick="scrollToId('games')">
+            Games
+        </button>
+
+        <button
+            data-section="services"
+            onclick="scrollToId('services')">
+            Services
+        </button>
+
+        <button
+            data-section="team"
+            onclick="scrollToId('team')">
+            Team
+        </button>
+
+        <button
+            data-section="changelog"
+            onclick="scrollToId('changelog')">
+            Changelog
+        </button>
+
+        <button
+            data-section="order"
+            onclick="scrollToId('order')">
+            Order
+        </button>
+
+        <button
+            data-section="status"
+            onclick="scrollToId('status')">
+            Status
+        </button>
+
+        <div class="nav-indicator" id="navIndicator"></div>
+
+    </div>
+
+    <div class="nav-actions">
+        <button
+            class="nav-order"
+            onclick="openCart()">
+
+            CART
+
+            <span
+                class="cart-count"
+                id="cartCount">
+                0
+            </span>
+
+        </button>
+
+        <button
+            class="music-control"
+            id="musicToggle"
+            type="button"
+            aria-label="Toggle background music"
+            title="Music"
+            onclick="toggleMusic()">
+            <span id="musicIcon">♫</span>
+        </button>
+
+        <audio id="bgMusic" preload="auto" autoplay playsinline loop>
+            <source src="fxnzz.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+</nav>
+
+<button class="floating-cart" type="button" onclick="openCart()" aria-label="Open shopping cart">
+    <span aria-hidden="true">▣</span>
+    <span>OPEN CART</span>
+    <span class="floating-cart-count" id="floatingCartCount">0</span>
+</button>
+
+<main>
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section
+    class="hero"
+    id="dashboard">
+
+    <div>
+
+        <div class="eyebrow">
+            FXNZZ SERVICE NETWORK
+        </div>
+
+        <h2>
+            Your account.<br>
+            Our <span>grind.</span>
+        </h2>
+
+        <p class="hero-hook">
+            Clear targets. Careful execution. Progress with purpose.
+        </p>
+
+        <p class="hero-text">
+            Pilih layanan gaming yang lu butuhkan tanpa
+            muter-muter. Semua paket, checkout, pembayaran,
+            dan status order dirancang dalam satu dashboard.
+        </p>
+
+        <div class="actions">
+
+            <button
+                class="btn primary magnetic"
+                onclick="scrollToId('services')">
+                Lihat Layanan
+            </button>
+
+            <button
+                class="btn magnetic"
+                onclick="scrollToId('status')">
+                Cek Status
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="hero-card">
+
+        <div class="status-pill">
+            <span class="live-dot"></span>
+            STORE ONLINE
+        </div>
+
+        <h3>
+            Joki Aman &amp; Terpercaya.
+        </h3>
+
+        <p>
+            Layanan joki gaming dengan proses yang jelas,
+            komunikasi langsung melalui admin, dan pengerjaan
+            yang mengutamakan keamanan akun serta kualitas hasil.
+        </p>
+
+        <div class="hero-trust" style="
+            margin-top:28px;
+            display:grid;
+            gap:10px;
+        ">
+            <div class="trust-item">
+                <strong>AMAN</strong>
+                <span>Data akun dijaga dan digunakan sesuai kebutuhan pengerjaan.</span>
+            </div>
+
+            <div class="trust-item">
+                <strong>TERPERCAYA</strong>
+                <span>Order dan pembayaran dikonfirmasi langsung bersama admin.</span>
+            </div>
+
+            <div class="trust-item">
+                <strong>PROFESSIONAL</strong>
+                <span>Setiap tindakan dipertimbangkan sebelum dilakukan. Progress, resource, dan risiko diperhatikan dari sisi customer maupun penjoki.</span>
+            </div>
+        </div>
+
+        <div class="fake-wave"></div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     GAMES
+========================= -->
+
+<section id="games">
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="eyebrow">
+                GAME HUB
+            </div>
+
+            <h2>
+                Pilih Game
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="game-grid">
+
+        <div class="game-card">
+
+            <div class="game-number">
+                01
+            </div>
+
+            <div class="game-code">
+                ZZZ / SERVICE
+            </div>
+
+            <h3>
+                Zenless Zone Zero
+            </h3>
+
+            <p>
+                Endgame, farming, event, Hollow Zero,
+                pull dan account maintenance.
+            </p>
+
+            <button
+                class="btn primary magnetic"
+                style="margin-top:22px"
+                onclick="filterGame('ZZZ')">
+                Lihat Paket
+            </button>
+
+        </div>
+
+        <div class="game-card">
+
+            <div class="game-number">
+                02
+            </div>
+
+            <div class="game-code">
+                PGR / SERVICE
+            </div>
+
+            <h3>
+                Punishing: Gray Raven
+            </h3>
+
+            <p>
+                Layanan progression, midgame,
+                farming dan content PGR.
+            </p>
+
+            <button
+                class="btn primary magnetic"
+                style="margin-top:22px"
+                onclick="filterGame('PGR')">
+                Lihat Paket
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     FXNZZ TEAM & OPERATIONS
+========================= -->
+<section id="team">
+    <div class="section-head">
+        <div>
+            <div class="eyebrow">PEOPLE BEHIND FXNZZ</div>
+            <h2>Team &amp; Operations</h2>
+        </div>
+        <p>Identitas tim ditampilkan secara jelas. Spesialisasi worker membantu customer mengetahui fokus pengerjaan setiap game.</p>
+    </div>
+
+    <div class="team-grid">
+        <article class="team-card owner">
+            <div class="team-role">◆ OWNER / FOUNDER</div>
+            <h3>FXNZZZ</h3>
+            <p>Pemilik FXNZZ STORE dan penanggung jawab arah layanan, operasional, serta koordinasi tim.</p>
+            <div class="team-specialty">ROLE <strong>Owner FXNZZZ</strong></div>
+        </article>
+        <article class="team-card worker">
+            <div class="team-role">✦ SPECIALIST WORKER</div>
+            <h3>DEON</h3>
+            <p>Worker dengan fokus layanan <strong>Punishing: Gray Raven</strong>.</p>
+            <div class="team-specialty">SPECIALTY <strong>PGR — Punishing: Gray Raven</strong></div>
+        </article>
+        <article class="team-card worker">
+            <div class="team-role">✦ SPECIALIST WORKER</div>
+            <h3>MR PARIZ</h3>
+            <p>Worker dengan fokus layanan <strong>Zenless Zone Zero</strong>.</p>
+            <div class="team-specialty">SPECIALTY <strong>ZZZ — Zenless Zone Zero</strong></div>
+        </article>
+    </div>
+</section>
+
+<section id="operations">
+    <div class="section-head">
+        <div>
+            <div class="eyebrow">SYSTEM OVERVIEW</div>
+            <h2>Module Status</h2>
+        </div>
+        <p>Status ditulis sesuai fungsi yang tersedia saat ini agar fitur simulasi tidak disalahartikan sebagai sistem backend realtime.</p>
+    </div>
+    <div class="module-grid">
+        <article class="module-card">
+            <span class="module-status active">ACTIVE</span>
+            <strong>Service Catalog</strong>
+            <p>Daftar layanan dan harga tersedia di halaman store.</p>
+        </article>
+        <article class="module-card">
+            <span class="module-status active">ACTIVE</span>
+            <strong>Cart &amp; WhatsApp Order</strong>
+            <p>Pilih paket, rangkum order, lalu lanjutkan detail melalui chat WhatsApp.</p>
+        </article>
+        <article class="module-card">
+            <span class="module-status dev">IN DEVELOPMENT</span>
+            <strong>Live Order Tracker</strong>
+            <p>Tracker di halaman ini belum terhubung ke database atau update order realtime.</p>
+        </article>
+        <article class="module-card">
+            <span class="module-status dev">IN DEVELOPMENT</span>
+            <strong>FXNZZ OS</strong>
+            <p>Lapisan operasional internal akan dikembangkan terpisah dari checkout publik.</p>
+        </article>
+    </div>
+</section>
+
+<section id="changelog">
+    <div class="section-head">
+        <div>
+            <div class="eyebrow">MAINTENANCE LOG</div>
+            <h2>Changelog</h2>
+        </div>
+        <p>Catatan perubahan manual, urut dari yang terbaru.</p>
+    </div>
+    <div class="changelog-list">
+        <article class="change-item">
+            <div class="change-date">2026-10-15</div>
+            <div><strong>Sticky checkout, package presets &amp; service hook</strong><p>Cart selalu dapat dibuka saat scroll, tujuh preset paket dapat diedit dari satu daftar ringkas, dan hook profesional ditambahkan tepat di bawah headline utama.</p></div>
+        </article>
+    </div>
+    <div class="config-note"><strong style="color:#ddd">Update sederhana:</strong> paket reguler dan harga dikelola di array <code>packages</code>. Tujuh preset paket custom ada di <code>packageTemplates</code>; ubah nama dan deskripsinya di satu daftar itu tanpa menyalin struktur object. Preset custom mengarahkan customer ke admin untuk konfirmasi harga. Situs ini belum memakai database/backend.</div>
+</section>
+
+<!-- =========================
+     SERVICES
+========================= -->
+
+<section id="services">
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="eyebrow">
+                SERVICE CENTER
+            </div>
+
+            <h2>
+                Available Services
+            </h2>
+
+        </div>
+
+        <p>
+            Pilih kategori untuk mempersempit layanan.
+            Pada mobile, paket tetap tiga card per baris.
+        </p>
+
+    </div>
+
+    <div class="filter">
+
+        <button
+            class="active"
+            onclick="filterCategory('ALL',this)">
+            ALL
+        </button>
+
+        <button
+            onclick="filterCategory('ZZZ',this)">
+            ZZZ
+        </button>
+
+        <button
+            onclick="filterCategory('PGR',this)">
+            PGR
+        </button>
+
+        <button
+            onclick="filterCategory('ENDGAME',this)">
+            ENDGAME
+        </button>
+
+        <button
+            onclick="filterCategory('FARMING',this)">
+            FARMING
+        </button>
+
+        <button
+            onclick="filterCategory('PULL',this)">
+            PULL
+        </button>
+
+    </div>
+
+    <div
+        class="package-grid"
+        id="packageGrid">
+    </div>
+
+</section>
+
+<!-- =========================
+     SPECIAL
+========================= -->
+
+<section>
+
+    <div class="special">
+
+        <div class="eyebrow">
+            SPECIAL SERVICE
+        </div>
+
+        <h3>
+            Rawat Akun VIP — 3 Patch
+        </h3>
+
+        <p>
+            Maintenance VIP selama 3 patch: aktivitas rutin, event, progression, build optimization, dan endgame sesuai kemampuan akun. Cocok untuk maintenance jangka panjang dengan scope yang jelas.
+        </p>
+
+        <div style="
+            margin-top:20px;
+            display:flex;
+            align-items:center;
+            gap:15px;
+            flex-wrap:wrap;
+        ">
+
+            <strong style="font-size:28px">
+                Rp150.000
+            </strong>
+
+            <button
+                class="btn primary magnetic"
+                onclick="addSpecial()">
+                Tambahkan ke Order
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     ORDER
+========================= -->
+
+<section id="order">
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="eyebrow">
+                CHECKOUT CENTER
+            </div>
+
+            <h2>
+                Buat Order
+            </h2>
+
+        </div>
+
+        <p>
+            Isi data dasar order. Detail akun dan pembayaran dibahas langsung
+            bersama admin melalui chat WhatsApp.
+        </p>
+
+    </div>
+
+    <div class="order-layout">
+
+        <div class="panel">
+
+            <h3>
+                Customer Information
+            </h3>
+
+            <div class="form-group">
+
+                <label>
+                    NAMA / NICKNAME
+                </label>
+
+                <input
+                    id="customerName"
+                    placeholder="Masukkan nama">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    WHATSAPP
+                </label>
+
+                <input
+                    id="customerWA"
+                    placeholder="08xxxxxxxxxx">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    METODE PEMBAYARAN (PREFERENSI)
+                </label>
+
+                <select id="customerPayment">
+                    <option value="Belum menentukan">Belum menentukan</option>
+                    <option value="DANA">DANA</option>
+                    <option value="GoPay">GoPay</option>
+                    <option value="QRIS">QRIS</option>
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    CATATAN ORDER
+                </label>
+
+                <textarea
+                    id="customerNote"
+                    placeholder="Contoh: fokus clear content tertentu..."></textarea>
+
+            </div>
+
+            <button
+                class="btn primary magnetic"
+                style="width:100%"
+                onclick="createOrder()">
+                CHAT ADMIN & ORDER
+            </button>
+
+        </div>
+
+        <div class="panel">
+
+            <h3>
+                Order Summary
+            </h3>
+
+            <div id="orderSummary">
+
+                <p style="color:#666;font-size:13px">
+                    Belum ada layanan dipilih.
+                </p>
+
+            </div>
+
+            <div class="checkout-total">
+
+                <span>
+                    TOTAL
+                </span>
+
+                <strong id="orderTotal">
+                    Rp0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     STATUS
+========================= -->
+
+<section id="status">
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="eyebrow">
+                ORDER TRACKER
+            </div>
+
+            <h2>
+                Track Your Order
+            </h2>
+
+        </div>
+
+        <p>
+            Tracker saat ini merupakan tampilan progres contoh dan belum tersambung ke database atau status order realtime.
+        </p>
+
+    </div>
+
+    <div class="panel">
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            gap:15px;
+            flex-wrap:wrap;
+            margin-bottom:30px;
+        ">
+
+            <div>
+
+                <small style="color:#666">
+                    ORDER ID
+                </small>
+
+                <h3
+                    id="trackerId"
+                    style="margin:5px 0 0">
+                    TRACKER-IN-DEV
+                </h3>
+
+            </div>
+
+            <div style="text-align:right">
+
+                <small style="color:#666">
+                    ORDER STATUS
+                </small>
+
+                <h3
+                    id="trackerStatus"
+                    style="
+                        margin:5px 0 0;
+                        color:var(--warning);
+                    ">
+                    IN DEVELOPMENT
+                </h3>
+
+            </div>
+
+        </div>
+
+        <div class="tracker">
+
+            <div
+                class="step"
+                id="step1">
+
+                <div class="step-dot">
+                    01
+                </div>
+
+                <span>
+                    Payment
+                </span>
+
+            </div>
+
+            <div
+                class="step"
+                id="step2">
+
+                <div class="step-dot">
+                    02
+                </div>
+
+                <span>
+                    Queue
+                </span>
+
+            </div>
+
+            <div
+                class="step"
+                id="step3">
+
+                <div class="step-dot">
+                    03
+                </div>
+
+                <span>
+                    Processing
+                </span>
+
+            </div>
+
+            <div
+                class="step"
+                id="step4">
+
+                <div class="step-dot">
+                    04
+                </div>
+
+                <span>
+                    Quality Check
+                </span>
+
+            </div>
+
+            <div
+                class="step"
+                id="step5">
+
+                <div class="step-dot">
+                    05
+                </div>
+
+                <span>
+                    Completed
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     TESTIMONIALS
+========================= -->
+
+<section>
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="eyebrow">
+                SERVICE COMMITMENT
+            </div>
+
+            <h2>
+                Komitmen Layanan
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="testimonial-grid">
+
+        <div class="testimonial">
+
+            <p>
+                Scope layanan dan target pengerjaan dikonfirmasi sebelum order dimulai.
+            </p>
+
+            <div class="user">
+                <strong>
+                    FXNZZ STORE
+                </strong>
+
+                <span>
+                    ZZZ
+                </span>
+            </div>
+
+        </div>
+
+        <div class="testimonial">
+
+            <p>
+                Customer dapat menghubungi admin untuk konfirmasi paket dan progres pengerjaan.
+            </p>
+
+            <div class="user">
+                <strong>
+                    FXNZZ STORE
+                </strong>
+
+                <span>
+                    PGR
+                </span>
+            </div>
+
+        </div>
+
+        <div class="testimonial">
+
+            <p>
+                Harga paket ditampilkan sebelum checkout. Hasil pengerjaan mengikuti kondisi akun dan target yang disepakati.
+            </p>
+
+            <div class="user">
+                <strong>
+                    FXNZZ STORE
+                </strong>
+
+                <span>
+                    ZZZ
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     FAQ
+========================= -->
+
+<section>
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="eyebrow">
+                HELP CENTER
+            </div>
+
+            <h2>
+                FAQ
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="faq">
+
+        <div class="faq-item">
+
+            <button
+                class="faq-q"
+                onclick="toggleFAQ(this)">
+
+                Bagaimana cara melakukan order?
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+            <div class="faq-a">
+                Pilih game, pilih layanan, tambahkan ke order,
+                isi informasi customer, lalu pilih metode pembayaran.
+            </div>
+
+        </div>
+
+        <div class="faq-item">
+
+            <button
+                class="faq-q"
+                onclick="toggleFAQ(this)">
+
+                Bagaimana status pengerjaan dilihat?
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+            <div class="faq-a">
+                Setelah order dibuat, nomor order digunakan
+                untuk melihat progress pengerjaan pada Order Tracker.
+            </div>
+
+        </div>
+
+        <div class="faq-item">
+
+            <button
+                class="faq-q"
+                onclick="toggleFAQ(this)">
+
+                Apakah pembayaran sudah benar-benar terhubung?
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+            <div class="faq-a">
+                Pembayaran dikonfirmasi langsung bersama admin. Website ini belum memproses pembayaran otomatis atau terhubung ke payment gateway.
+            </div>
+
+        </div>
+
+        <div class="faq-item">
+
+            <button
+                class="faq-q"
+                onclick="toggleFAQ(this)">
+
+                Apakah data order realtime?
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+            <div class="faq-a">
+                Belum. Tracker pada website ini belum terhubung ke database dan tidak menampilkan pembaruan order secara realtime.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     SUPPORT
+========================= -->
+
+<section>
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="eyebrow">
+                CUSTOMER SUPPORT
+            </div>
+
+            <h2>
+                Need Assistance?
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="support">
+
+        <div class="support-card">
+
+            <div class="eyebrow">
+                WHATSAPP
+            </div>
+
+            <h3>
+                Chat Admin
+            </h3>
+
+            <p>
+                Gunakan WhatsApp untuk pertanyaan order,
+                konfirmasi, atau masalah pengerjaan.
+            </p>
+
+            <button
+                class="btn primary magnetic"
+                style="margin-top:18px"
+                onclick="openAdminChat()">
+                OPEN WHATSAPP
+            </button>
+
+        </div>
+
+        <div class="support-card">
+
+            <div class="eyebrow">
+                FXNZZ TEAM
+            </div>
+
+            <h3>
+                Kenali Tim Kami
+            </h3>
+
+            <p>
+                Lihat owner dan spesialis worker berdasarkan game untuk mengetahui fokus layanan FXNZZ STORE.
+            </p>
+
+            <button
+                class="btn magnetic"
+                style="margin-top:18px"
+                onclick="scrollToId('team')">
+                LIHAT TIM FXNZZ
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+
+    <div>
+        <strong style="color:#aaa">
+            FXNZZ STORE
+        </strong>
+
+        <br>
+
+        Gaming service untuk Zenless Zone Zero &amp; Punishing: Gray Raven.
+    </div>
+
+    <div>
+        ZZZ · PGR · DANA · GoPay · QRIS
+    </div>
+
+    <div>
+        <div style="margin-bottom:9px;color:#aaa;font-weight:800">
+            SOCIAL MEDIA
+        </div>
+
+        <div class="social-links">
+            <a
+                class="social-link"
+                href="https://www.tiktok.com/@fxnzzz_store"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok FXNZZ STORE">
+                <b>TikTok</b>
+                <small>@fxnzzz_store</small>
+            </a>
+
+            <a
+                class="social-link"
+                href="https://www.instagram.com/fxnzz_storee/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram FXNZZ STORE">
+                <b>Instagram</b>
+                <small>@fxnzz_storee</small>
+            </a>
+
+            <a
+                class="social-link"
+                href="https://saweria.co/Feynsan"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Saweria FXNZZ STORE">
+                <b>Saweria</b>
+                <small>saweria.co/Feynsan</small>
+            </a>
+        </div>
+
+        <div style="margin-top:10px;color:#555;font-size:9px">
+            © 2026 FXNZZ STORE
+        </div>
+    </div>
+
+</footer>
+
+<!-- MOBILE NAV -->
+
+<div class="mobile-nav">
+
+    <button onclick="scrollToId('dashboard')">
+        <span>⌂</span>
+        HOME
+    </button>
+
+    <button onclick="scrollToId('services')">
+        <span>◈</span>
+        SERVICE
+    </button>
+
+    <button onclick="openCart()">
+        <span>□</span>
+        ORDER
+    </button>
+
+    <button onclick="scrollToId('status')">
+        <span>◌</span>
+        STATUS
+    </button>
+    <button onclick="scrollToId('team')">
+        <span>✦</span>
+        TEAM
+    </button>
+
+</div>
+
+<!-- CART -->
+
+<div
+    class="overlay"
+    id="cartOverlay"
+    onclick="closeCart(event)">
+
+    <div
+        class="drawer"
+        onclick="event.stopPropagation()">
+
+        <div class="drawer-head">
+
+            <h2>
+                Your Order
+            </h2>
+
+            <button
+                class="close"
+                onclick="closeCart()">
+                ×
+            </button>
+
+        </div>
+
+        <div id="cartItems"></div>
+
+        <div class="drawer-total">
+
+            <span>
+                TOTAL
+            </span>
+
+            <span id="cartTotal">
+                Rp0
+            </span>
+
+        </div>
+
+        <button
+            class="btn primary magnetic"
+            style="width:100%"
+            onclick="goCheckout()">
+            PROCEED TO CHECKOUT
+        </button>
+
+    </div>
+
+</div>
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+<script>
+
+/* ==============================
+   DATA
+================================ */
+
+const packages = [
+
+    /* ==============================
+       ZZZ — ENDGAME
+    ================================ */
+
+    {
+        game:"ZZZ", category:"ENDGAME",
+        title:"Shiyu Defense — 3 STAR/Full Clear", image:"https://ik.imagekit.io/fans5/zzz_shiyu_defense_3_star_full_clear.png",
+        desc:"Pengerjaan Shiyu Defense sampai target clear yang disepakati. Hasil clear bergantung pada roster, build, dan kondisi akun.",
+        price:8000, badge:""
+    },
+    {
+        game:"ZZZ", category:"ENDGAME",
+        title:"Deadly Assault — 3 STAR/Full Clear", image:"https://ik.imagekit.io/fans5/zzz_deadly_assault_3_star_full_clear.png",
+        desc:"Pengerjaan Deadly Assault sesuai kemampuan akun dan target yang disepakati. Tidak menjamin skor tertentu jika akun belum memenuhi syarat.",
+        price:10000, badge:"POPULAR"
+    },
+    {
+        game:"ZZZ", category:"ENDGAME",
+        title:"Battle Trial — 3 Floor", image:"https://ik.imagekit.io/fans5/zzz_battle_trial_3_floor.png",
+        desc:"Pengerjaan Battle Trial hingga 5 floor sesuai kondisi akun dan target layanan.",
+        price:10000, badge:""
+    },
+    {
+        game:"ZZZ", category:"ENDGAME",
+        title:"Endgame Combat Event", image:"https://ik.imagekit.io/fans5/zzz_endgame_combat_event.png",
+        desc:"Pengerjaan combat event Annihillation.",
+        price:10000, badge:""
+    },
+    {
+        game:"ZZZ", category:"ENDGAME",
+        title:"Hollow Zero — Max + Full Clear", image:"https://ik.imagekit.io/fans5/zzz_hollow_zero_max_full_clear.png",
+        desc:"Pengerjaan Hollow Zero pada difficulty maksimal yang tersedia, dengan target full clear sesuai kemampuan akun.",
+        price:15000, badge:""
+    },
+    {
+        game:"ZZZ", category:"ENDGAME",
+        title:"Event Combat", image:"https://ik.imagekit.io/fans5/zzz_event_combat.png",
+        desc:"Pengerjaan stage combat event sesuai target customer dan reward yang tersedia.",
+        price:7000, badge:""
+    },
+
+    /* ==============================
+       ZZZ — ACCOUNT CARE / FARMING
+    ================================ */
+
+    {
+        game:"ZZZ", category:"FARMING",
+        title:"Rawat Akun — 1 Patch", image:"https://ik.imagekit.io/fans5/zzz_rawat_akun_1_patch.png",
+        desc:"Maintenance akun selama 1 patch: daily utama, Battery/Stamina secara efisien, weekly, farming resource prioritas, event aktif, dan progression rutin sesuai kondisi akun.",
+        price:50000, badge:""
+    },
+    {
+        game:"ZZZ", category:"FARMING",
+        title:"Rawat Akun — 2 Patch", image:"https://ik.imagekit.io/fans5/zzz_rawat_akun_2_patch.png",
+        desc:"Maintenance akun selama 2 patch. Mencakup aktivitas rutin, Battery/Stamina, weekly, farming prioritas, event aktif, dan progression yang dapat dilanjutkan antar-patch.",
+        price:75000, badge:"BEST VALUE"
+    },
+    {
+        game:"ZZZ", category:"FARMING",
+        title:"Rawat Akun VIP — 1 Patch", image:"https://ik.imagekit.io/fans5/zzz_rawat_akun_vip_1_patch.png",
+        desc:"Maintenance 1 patch dengan prioritas lebih tinggi: seluruh scope Rawat Akun, event, build/farming optimization, serta endgame seperti Shiyu, Deadly Assault, Hollow Zero, dan combat event sesuai kemampuan akun.",
+        price:85000, badge:"VIP"
+    },
+    {
+        game:"ZZZ", category:"FARMING",
+        title:"Rawat Akun VIP — 2 Patch", image:"https://ik.imagekit.io/fans5/zzz_rawat_akun_vip_2_patch.png",
+        desc:"Maintenance VIP selama 2 patch dengan scope rutin + event + progression + build optimization + endgame. Prioritas disesuaikan dengan perkembangan akun setiap patch.",
+        price:135000, badge:"VIP"
+    },
+    {
+        game:"ZZZ", category:"FARMING",
+        title:"Event Pyrois 2 mindscape + signature", image:"https://ik.imagekit.io/fans5/zzz_event_pyrois_2_mindscape_signature.png",
+        desc:"Pengerjaan event khusunya pyrois untuk mendapatkan mindscape dan signature reward.",
+        price:35000, badge:"POPULAR"
+    },
+    {
+        game:"ZZZ", category:"FARMING",
+        title:"Bonus paket tambahan", image:"https://ik.imagekit.io/fans5/zzz_bonus_paket_tambahan.png",  
+        desc:"Pengerjaan 2 chapter story dan 5 quest + 2 event combat.",
+        price:17000, badge:"BEST VALUE"
+    },
+    {
+        game:"ZZZ", category:"FARMING",
+        title:"Bonus paket tambahan", image:"https://ik.imagekit.io/fans5/zzz_bonus_paket_tambahan.png",
+        desc:"Mengerjakan 2 chapter story dan 5 quest.",
+        price:10000, badge:""
+    },
+    {
+        game:"ZZZ", category:"FARMING",
+        title:"Bonus paket tambahan", image:"https://ik.imagekit.io/fans5/zzz_bonus_paket_tambahan.png",
+        desc:"Pengerjaan 2 chapter story dan 2 event combat.",
+        price:7000, badge:""
+    },
+    {
+        game:"ZZZ", category:"FARMING",
+        title:"Story — 2 Chapter", image:"https://ik.imagekit.io/fans5/zzz_story_2_chapter.png",
+        desc:"Penyelesaian 4 chapter story + 5 area combat + 8 quest.",
+        price:25000, badge:"BEST VALUE"
+    },
+
+    /* ==============================
+       ZZZ — PULL
+    ================================ */
+
+    {
+        game:"ZZZ", category:"PULL",
+        title:"10 Pull", image:"https://ik.imagekit.io/fans5/zzz_10_pull.png", desc:"Joki pull hingga 10 kali sesuai resource yang tersedia pada akun.",
+        price:13000, badge:""
+    },
+    {
+        game:"ZZZ", category:"PULL",
+        title:"30 Pull", image:"https://ik.imagekit.io/fans5/zzz_30_pull.png", desc:"Joki pull hingga 30 kali sesuai resource yang tersedia pada akun.",
+        price:33000, badge:""
+    },
+    {
+        game:"ZZZ", category:"PULL",
+        title:"50 Pull", image:"https://ik.imagekit.io/fans5/zzz_50_pull.png", desc:"Joki pull hingga 50 kali sesuai resource yang tersedia pada akun.",
+        price:55000, badge:""
+    },
+    {
+        game:"ZZZ", category:"PULL",
+        title:"100 Pull", image:"https://ik.imagekit.io/fans5/zzz_100_pull.png", desc:"Joki pull hingga 100 kali sesuai resource yang tersedia pada akun. Hasil gacha tetap mengikuti sistem RNG game.",
+        price:100000, badge:"BEST VALUE"
+    },
+
+    /* ==============================
+       PGR — ENDGAME / CORE
+    ================================ */
+
+    {
+        game:"PGR", category:"ENDGAME",
+        title:"War Zone", image:"https://ik.imagekit.io/fans5/pgr_war_zone.png",
+        desc:"Pengerjaan War Zone sesuai target yang disepakati dan kemampuan akun.",
+        price:15000, badge:"POPULAR"
+    },
+    {
+        game:"PGR", category:"ENDGAME",
+        title:"Phantom Pain Cage", image:"https://ik.imagekit.io/fans5/pgr_phantom_pain_cage.png",
+        desc:"Pengerjaan Phantom Pain Cage sesuai kondisi roster dan target layanan. Skor tidak dijamin jika build belum memadai.",
+        price:10000, badge:""
+    },
+    {
+        game:"PGR", category:"ENDGAME",
+        title:"Norman Revival Plan", image:"https://ik.imagekit.io/fans5/pgr_norman_revival_plan.png",
+        desc:"Progress Norman Revival Plan sesuai stage yang dapat dicapai oleh akun dan target layanan.",
+        price:13000, badge:"BEST VALUE"
+    },
+    {
+        game:"PGR", category:"ENDGAME",
+        title:"Babel Tower", image:"https://ik.imagekit.io/fans5/pgr_babel_tower.png",
+        desc:"Pengerjaan Babel Tower sesuai target dan kemampuan roster akun.",
+        price:10000, badge:""
+    },
+    {
+        game:"PGR", category:"ENDGAME",
+        title:"PGR Endgame Service", image:"https://ik.imagekit.io/fans5/pgr_pgr_endgame_service.png",
+        desc:"Pengerjaan content endgame PGR yang tersedia dan disepakati sebelum order, dengan hasil menyesuaikan kondisi akun.",
+        price:15000, badge:"BEST VALUE"
+    },
+
+    /* ==============================
+       PGR — FARMING / EVENT
+    ================================ */
+
+    {
+        game:"PGR", category:"FARMING",
+        title:"Derived from matrix", image:"https://ik.imagekit.io/fans5/pgr_derived_from_matrix.png",
+        desc:"farming stage DFM dengan /20 levelnya.",
+        price:8000, badge:""
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Cursed Waves", image:"https://ik.imagekit.io/fans5/pgr_cursed_waves.png",
+        desc:"Mengerjakan stage event Cursed Waves dengan /20 levelnya.",
+        price:10000, badge:"POPULAR"
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Awakening Thundra", image:"https://ik.imagekit.io/fans5/pgr_awakening_thundra.png",
+        desc:"Pengerjaan stage event Awakening thundra dengan /20 levelnya.",
+        price:5000, badge:""
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Shrouded Requiem", image:"https://ik.imagekit.io/fans5/pgr_shrouded_requiem.png",
+        desc:"Pengerjaan dan clear difficulty yang tersedia sesuai kondisi akun dan target layanan.",
+        price:20000, badge:""
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"The Goddfall Revelation", image:"https://ik.imagekit.io/fans5/pgr_the_goddfall_revelation.png",
+        desc:"Pengerjaan content dan target Character Badges sesuai akses serta kondisi akun.",
+        price:25000, badge:""
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Recitativo di Fantasia", image:"https://ik.imagekit.io/fans5/pgr_recitativo_di_fantasia.png",
+        desc:"Pengerjaan progress dan clear content sesuai target yang disepakati.",
+        price:18000, badge:""
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Story — 2 Chapter", image:"https://ik.imagekit.io/fans5/pgr_story_2_chapter.png",
+        desc:"Penyelesaian hingga 2 chapter story sesuai akses akun. Quest tambahan di luar scope tidak otomatis termasuk.",
+        price:10000, badge:""
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Quest", image:"https://ik.imagekit.io/fans5/pgr_quest.png",
+        desc:"Penyelesaian quest yang ditentukan customer sesuai kondisi akun.",
+        price:8000, badge:""
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Event Farming", image:"https://ik.imagekit.io/fans5/pgr_event_farming.png",
+        desc:"Farming reward atau resource event sesuai target selama event masih tersedia.",
+        price:12000, badge:""
+    },
+
+    /* ==============================
+       PGR — ACCOUNT CARE
+    ================================ */
+
+    {
+        game:"PGR", category:"FARMING",
+        title:"Rawat Akun — 1 Patch", image:"https://ik.imagekit.io/fans5/pgr_rawat_akun_1_patch.png", 
+        desc:"Maintenance akun selama 1 patch: aktivitas rutin, resource farming prioritas, weekly, event aktif, dan progression sesuai kondisi akun.",
+        price:35000, badge:""
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Rawat Akun — 2 Patch", image:"https://ik.imagekit.io/fans5/pgr_rawat_akun_2_patch.png", 
+        desc:"Maintenance akun selama 2 patch dengan aktivitas rutin, farming prioritas, weekly, event aktif, dan progression yang dapat dilanjutkan antar-patch.",
+        price:55000, badge:"BEST VALUE"
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Rawat Akun VIP — 1 Patch", image:"https://ik.imagekit.io/fans5/pgr_rawat_akun_vip_1_patch.png",
+        desc:"Maintenance VIP 1 patch: seluruh scope Rawat Akun, event, progression, build/farming optimization, serta endgame seperti War Zone, Phantom Pain Cage, Norman Revival Plan, dan Babel Tower sesuai kemampuan akun.",
+        price:75000, badge:"VIP"
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Rawat Akun VIP — 2 Patch", image:"https://ik.imagekit.io/fans5/pgr_rawat_akun_vip_2_patch.png",
+        desc:"Maintenance VIP selama 2 patch dengan scope rutin + event + progression + build optimization + endgame, diprioritaskan berdasarkan perkembangan akun.",
+        price:125000, badge:"VIP"
+    },
+    {
+        game:"PGR", category:"FARMING",
+        title:"Rawat Akun VIP — 3 Patch", image:"https://ik.imagekit.io/fans5/pgr_rawat_akun_vip_3_patch.png",
+        desc:"Maintenance VIP selama 3 patch dengan scope rutin, event, progression, build optimization, dan endgame sesuai kemampuan akun.",
+        price:140000, badge:"VIP"
+    }
+];
+
+/* =========================================================
+   7 QUICK-EDIT PACKAGE PRESETS
+   Ubah teks di bawah ini saja untuk menyesuaikan template.
+   Struktur object dikelola oleh makePackageTemplate(), jadi
+   tidak perlu menyalin ulang format package setiap kali.
+   Paket preset memakai sistem penawaran harga via admin.
+========================================================= */
+const makePackageTemplate = (game, category, title, desc, badge="CUSTOM") => ({
+    game, category, title, desc, price:null, badge, quoteOnly:true
+});
+
+const packageTemplates = [
+    makePackageTemplate("ZZZ", "ENDGAME", "ZZZ — Custom Endgame Target", "Tentukan target Shiyu Defense, Deadly Assault, Hollow Zero, atau combat endgame lain bersama admin."),
+    makePackageTemplate("ZZZ", "FARMING", "ZZZ — Event & Reward Clear", "Paket pengerjaan event dan reward sesuai event aktif, akses akun, serta target yang disepakati."),
+    makePackageTemplate("ZZZ", "FARMING", "ZZZ — Story & Quest Bundle", "Pilih chapter story dan quest yang ingin diselesaikan. Scope final dikonfirmasi sebelum pengerjaan."),
+    makePackageTemplate("ZZZ", "FARMING", "ZZZ — Resource Farming", "Farming material, resource, atau progression sesuai kebutuhan akun dan prioritas customer."),
+    makePackageTemplate("ZZZ", "FARMING", "ZZZ — Custom Account Care", "Maintenance akun dengan daftar aktivitas khusus yang ditentukan customer dan dikonfirmasi admin."),
+    makePackageTemplate("PGR", "ENDGAME", "PGR — Custom Endgame Target", "Tentukan target War Zone, Phantom Pain Cage, Norman Revival Plan, Babel Tower, atau content endgame lain."),
+    makePackageTemplate("PGR", "FARMING", "PGR — Event & Resource Bundle", "Paket event, farming, story, atau resource PGR dengan scope yang disepakati bersama admin.")
+];
+
+packages.push(...packageTemplates);
+
+let cart=[];
+let currentOrder=null;
+
+
+/* ==============================
+   ENTRY
+================================ */
+
+let entering=false;
+
+function startBackgroundMusic(){
+    const audio=document.getElementById("bgMusic");
+    const button=document.getElementById("musicToggle");
+    const icon=document.getElementById("musicIcon");
+    if(!audio)return;
+    audio.volume=0.45;
+    const playPromise=audio.play();
+    if(playPromise && typeof playPromise.then==="function"){
+        playPromise.then(()=>{
+            button?.classList.add("playing");
+            if(icon)icon.textContent="♫";
+        }).catch(()=>{});
+    }
+}
+
+function enterStore(){
+
+    if(entering)return;
+
+    entering=true;
+
+    /* ENTER STORE is a user gesture; retry audible autoplay here. */
+    startBackgroundMusic();
+
+    const title=document.getElementById("entryTitle");
+    const fxTitle=title.querySelector(".fx-title");
+    const button=document.getElementById("enterButton");
+    const entry=document.getElementById("entry");
+    const app=document.getElementById("app");
+
+    title.classList.remove("slashing");
+    fxTitle.classList.remove("fx-slash");
+
+    void title.offsetWidth;
+    void fxTitle.offsetWidth;
+
+    /* Black lightning + slash drives the logo out. */
+    fxTitle.classList.add("fx-slash");
+    title.classList.add("slashing");
+
+    button.style.pointerEvents="none";
+
+    setTimeout(()=>{
+        entry.classList.add("hide");
+        app.classList.add("ready");
+    },620);
+
+    setTimeout(()=>{
+        entry.style.display="none";
+        button.style.pointerEvents="auto";
+        entering=false;
+    },900);
+
+}
+
+
+/* ==============================
+   UTIL
+================================ */
+
+function rupiah(number){
+
+    return "Rp"+number.toLocaleString("id-ID");
+
+}
+
+function scrollToId(id){
+
+    const target=document.getElementById(id);
+
+    if(!target)return;
+
+    target.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+
+}
+
+function toast(message){
+
+    const el=document.getElementById("toast");
+    if(!el)return;
+
+    el.textContent=message;
+
+    el.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer=setTimeout(()=>{
+
+        el.classList.remove("show");
+
+    },2200);
+
+}
+
+function openSocial(platform){
+    const links={
+        TikTok:"https://www.tiktok.com/@fxnzzz_store",
+        Instagram:"https://www.instagram.com/fxnzz_storee/",
+        Saweria:"https://saweria.co/Feynsan"
+    };
+    const url=links[platform];
+    if(!url){
+        toast("Link "+platform+" belum tersedia.");
+        return false;
+    }
+    window.open(url,"_blank","noopener,noreferrer");
+    return false;
+}
+
+
+/* ==============================
+   MICRO FEEDBACK / RIPPLE
+================================ */
+
+document.addEventListener("click",function(e){
+
+    const button=e.target.closest(
+        ".btn,.enter-btn,.nav-order,.close,.filter button,.payment-method"
+    );
+
+    if(!button)return;
+
+    if(
+        button.classList.contains("payment-method") ||
+        button.classList.contains("filter")
+    ){
+        return;
+    }
+
+    if(
+        button.classList.contains("enter-btn") ||
+        button.classList.contains("btn")
+    ){
+
+        const rect=button.getBoundingClientRect();
+
+        const ripple=document.createElement("span");
+
+        ripple.className="ripple";
+
+        ripple.style.left=(e.clientX-rect.left)+"px";
+        ripple.style.top=(e.clientY-rect.top)+"px";
+
+        button.appendChild(ripple);
+
+        setTimeout(()=>{
+            ripple.remove();
+        },320);
+
+    }
+
+});
+
+
+/* ==============================
+   PACKAGE RENDER
+================================ */
+
+function renderPackages(filter="ALL"){
+
+    const grid=document.getElementById("packageGrid");
+
+    let data=packages;
+
+    if(
+        filter==="ZZZ" ||
+        filter==="PGR"
+    ){
+
+        data=data.filter(
+            x=>x.game===filter
+        );
+
+    }
+
+    else if(
+        filter==="ENDGAME" ||
+        filter==="FARMING" ||
+        filter==="PULL"
+    ){
+
+        data=data.filter(
+            x=>x.category===filter
+        );
+
+    }
+
+    grid.classList.remove("spotlight-mode");
+
+    grid.innerHTML=data.map(item=>`
+
+        <article class="package ${item.empty ? "empty-slot" : ""}">
+
+            <div class="package-image-wrap">
+                <img
+                    class="package-image"
+                    src="${item.image || 'images/product-image-needed.svg'}"
+                    alt="${item.title.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')}"
+                    loading="lazy"
+                    decoding="async"
+                    onerror="this.onerror=null;this.src='images/product-image-needed.svg';"
+                >
+            </div>
+
+            <div class="package-top">
+
+                <div class="package-category">
+                    ${item.game} / ${item.category}
+                </div>
+
+                ${
+                    item.badge
+                    ? `<div class="badge">${item.badge}</div>`
+                    : ""
+                }
+
+            </div>
+
+            <h3>
+                ${item.title}
+            </h3>
+
+            <p class="package-desc">
+                ${item.desc}
+            </p>
+
+            <div class="price">
+                ${item.empty ? "—" : item.quoteOnly ? "KONFIRMASI ADMIN" : rupiah(item.price)}
+                ${item.empty || item.quoteOnly ? "" : `<span>/ service</span>`}
+            </div>
+
+            ${
+                item.empty
+                ? `<button class="btn" type="button" disabled>COMING SOON</button>`
+                : item.quoteOnly
+                    ? `<button class="btn primary" type="button" onclick="askPackage(${packages.indexOf(item)})">TANYA ADMIN</button>`
+                    : `<button
+                        class="btn primary"
+                        type="button"
+                        onclick="addToCart(${packages.indexOf(item)})">
+                        ADD TO ORDER
+                   </button>`
+            }
+
+        </article>
+
+    `).join("");
+
+    initCardSpotlight();
+
+}
+function filterCategory(category,button){
+
+    document.querySelectorAll(
+        ".filter button"
+    ).forEach(x=>{
+        x.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    renderPackages(category);
+
+    toast("Filter: "+category);
+
+}
+
+function filterGame(game){
+
+    renderPackages(game);
+
+    document.querySelectorAll(
+        ".filter button"
+    ).forEach(x=>{
+        x.classList.toggle(
+            "active",
+            x.textContent.trim()===game
+        );
+    });
+
+    scrollToId("services");
+    toast(game+" services loaded.");
+
+}
+
+
+/* ==============================
+   CARD SPOTLIGHT
+================================ */
+
+function initCardSpotlight(){
+
+    const grid=document.getElementById("packageGrid");
+    if(!grid)return;
+
+    const cards=[
+        ...grid.querySelectorAll(".package")
+    ];
+
+    cards.forEach(card=>{
+
+        card.addEventListener("pointerenter",()=>{
+
+            if(window.matchMedia("(hover:hover)").matches){
+
+                grid.classList.add("spotlight-mode");
+
+                cards.forEach(c=>{
+                    c.classList.remove("spotlight-active");
+                });
+
+                card.classList.add("spotlight-active");
+
+            }
+
+        });
+
+        card.addEventListener("pointermove",e=>{
+
+            const rect=card.getBoundingClientRect();
+
+            const x=e.clientX-rect.left;
+            const y=e.clientY-rect.top;
+
+            card.style.setProperty(
+                "--spot-x",
+                x+"px"
+            );
+
+            card.style.setProperty(
+                "--spot-y",
+                y+"px"
+            );
+
+        });
+
+        card.addEventListener("pointerleave",()=>{
+
+            card.classList.remove(
+                "spotlight-active"
+            );
+
+            grid.classList.remove(
+                "spotlight-mode"
+            );
+
+        });
+
+    });
+
+}
+
+
+/* ==============================
+   MAGNETIC BUTTON
+================================ */
+
+function initMagneticButtons(){
+
+    if(
+        !window.matchMedia("(hover:hover) and (pointer:fine)").matches
+    ){
+        return;
+    }
+
+    document.querySelectorAll(".magnetic")
+        .forEach(button=>{
+
+            button.addEventListener("pointermove",e=>{
+
+                const rect=
+                    button.getBoundingClientRect();
+
+                const x=
+                    e.clientX -
+                    rect.left -
+                    rect.width/2;
+
+                const y=
+                    e.clientY -
+                    rect.top -
+                    rect.height/2;
+
+                const strength=.16;
+
+                button.style.transform=
+                    `translate(${x*strength}px,${y*strength}px)`;
+
+            });
+
+            button.addEventListener("pointerleave",()=>{
+
+                button.style.transform="translate(0,0)";
+
+            });
+
+        });
+
+}
+
+
+/* ==============================
+   CART
+================================ */
+
+function askPackage(index){
+    const item=packages[index];
+    if(!item)return;
+    const message=encodeURIComponent(
+        `Halo Admin FXNZZ STORE, saya ingin konsultasi paket:
+
+`+
+        `Game: ${item.game}
+Paket: ${item.title}
+Scope: ${item.desc}
+
+`+
+        `Mohon info harga dan estimasi pengerjaan.`
+    );
+    const phone=(typeof ADMIN_WHATSAPP!=="undefined" ? ADMIN_WHATSAPP : "").replace(/\D/g,"");
+    const url=phone ? `https://wa.me/${phone}?text=${message}` : `https://wa.me/?text=${message}`;
+    window.open(url,"_blank","noopener,noreferrer");
+}
+
+function addToCart(index){
+
+    const item=packages[index];
+
+    cart.push({
+        ...item,
+        id:Date.now()+Math.random()
+    });
+
+    updateCart();
+
+    toast(
+        item.title+
+        " ditambahkan."
+    );
+
+}
+
+function addSpecial(){
+
+    cart.push({
+
+        game:"ZZZ",
+        category:"SPECIAL",
+
+        title:
+            "Rawat Akun VIP — 3 Patch",
+
+        desc:
+            "Maintenance VIP selama 3 patch: aktivitas rutin, event, progression, build optimization, dan endgame sesuai kemampuan akun.",
+
+        price:150000,
+
+        badge:"SPECIAL",
+
+        id:Date.now()
+
+    });
+
+    updateCart();
+
+    toast(
+        "Special service ditambahkan."
+    );
+
+}
+
+function updateCart(){
+
+    const cartCount=document.getElementById("cartCount");
+    const floatingCartCount=document.getElementById("floatingCartCount");
+    const container=document.getElementById("cartItems");
+    const cartTotal=document.getElementById("cartTotal");
+    if(!container)return;
+    if(cartCount)cartCount.textContent=cart.length;
+    if(floatingCartCount)floatingCartCount.textContent=cart.length;
+
+    if(!cart.length){
+
+        container.innerHTML=`
+
+            <div class="cart-empty">
+
+                <div style="font-size:30px">
+                    □
+                </div>
+
+                <p>
+                    Belum ada layanan.
+                </p>
+
+            </div>
+
+        `;
+
+    }else{
+
+        container.innerHTML=
+            cart.map(item=>`
+
+                <div class="cart-item">
+
+                    <strong>
+                        ${item.title}
+                    </strong>
+
+                    <small>
+                        ${item.game} ·
+                        ${item.category}
+                    </small>
+
+                    <div class="cart-item-bottom">
+
+                        <strong>
+                            ${rupiah(item.price)}
+                        </strong>
+
+                        <button
+                            class="remove"
+                            onclick="removeFromCart('${item.id}')">
+
+                            REMOVE
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("");
+
+    }
+
+    const total=
+        cart.reduce(
+            (sum,item)=>sum+item.price,
+            0
+        );
+
+    if(cartTotal)cartTotal.textContent=rupiah(total);
+
+    updateSummary();
+
+}
+
+function removeFromCart(id){
+
+    cart=cart.filter(
+        item=>String(item.id)!==
+        String(id)
+    );
+
+    updateCart();
+
+    toast("Item dihapus.");
+
+}
+
+function openCart(){
+
+    const overlay=document.getElementById("cartOverlay");
+    if(!overlay)return;
+    overlay.classList.add("show");
+
+    document.documentElement.classList.add("cart-open");
+    document.body.classList.add("cart-open");
+
+}
+
+function closeCart(event){
+
+    const overlay=document.getElementById("cartOverlay");
+    if(!overlay)return;
+
+    if(
+        event &&
+        event.target !== overlay &&
+        event.currentTarget === overlay
+    ){
+        return;
+    }
+
+    overlay.classList.remove("show");
+
+    document.documentElement.classList.remove("cart-open");
+    document.body.classList.remove("cart-open");
+
+}
+
+function goCheckout(){
+
+    closeCart();
+
+    scrollToId("order");
+
+}
+
+
+/* ==============================
+   ORDER SUMMARY
+================================ */
+
+function updateSummary(){
+
+    const summary=document.getElementById("orderSummary");
+    const orderTotal=document.getElementById("orderTotal");
+    if(!summary)return;
+
+    if(!cart.length){
+
+        summary.innerHTML=`
+
+            <p style="
+                color:#666;
+                font-size:13px">
+
+                Belum ada layanan dipilih.
+
+            </p>
+
+        `;
+
+    }else{
+
+        summary.innerHTML=
+            cart.map(item=>`
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    gap:15px;
+                    padding:10px 0;
+                    border-bottom:
+                        1px solid var(--line);
+                ">
+
+                    <span style="
+                        font-size:12px">
+
+                        ${item.title}
+
+                    </span>
+
+                    <strong style="
+                        font-size:12px">
+
+                        ${rupiah(item.price)}
+
+                    </strong>
+
+                </div>
+
+            `).join("");
+
+    }
+
+    const total=
+        cart.reduce(
+            (sum,item)=>sum+item.price,
+            0
+        );
+
+    if(orderTotal)orderTotal.textContent=rupiah(total);
+
+}
+
+
+/* ==============================
+   CHAT ORDER
+================================ */
+
+const ADMIN_WHATSAPP = "6285850654348";
+// Isi dengan nomor WhatsApp admin format internasional, tanpa + atau spasi.
+
+function createOrder(){
+
+    if(!cart.length){
+        toast("Pilih minimal satu layanan.");
+        return;
+    }
+
+    const name=document.getElementById("customerName")?.value.trim();
+    const wa=document.getElementById("customerWA")?.value.trim();
+    const payment=document.getElementById("customerPayment")?.value || "Belum menentukan";
+    const note=document.getElementById("customerNote")?.value.trim() || "-";
+
+    if(!name || !wa){
+        toast("Isi nama dan WhatsApp.");
+        return;
+    }
+
+    const random=Math.floor(1000+Math.random()*9000);
+    const total=cart.reduce((sum,item)=>sum+item.price,0);
+
+    currentOrder={
+        id:"FXNZZ-"+random,
+        name,
+        wa,
+        payment,
+        note,
+        total,
+        status:0
+    };
+
+    const items=cart.map((item,i)=>
+        `${i+1}. ${item.game} — ${item.title} — ${rupiah(item.price)}`
+    ).join("%0A");
+
+    const message=
+        `Halo Admin FXNZZ STORE,%0A%0A`+
+        `Saya ingin order.%0A`+
+        `Order ID: ${encodeURIComponent(currentOrder.id)}%0A`+
+        `Nama: ${encodeURIComponent(name)}%0A`+
+        `WhatsApp: ${encodeURIComponent(wa)}%0A%0A`+
+        `Layanan:%0A${items}%0A%0A`+
+        `Total: ${encodeURIComponent(rupiah(total))}%0A`+
+        `Preferensi pembayaran: ${encodeURIComponent(payment)}%0A`+
+        `Catatan: ${encodeURIComponent(note)}%0A%0A`+
+        `Mohon konfirmasi order dan instruksi pembayaran.`;
+
+    if(ADMIN_WHATSAPP.trim()){
+        window.open(`https://wa.me/${ADMIN_WHATSAPP.replace(/\D/g,"")}?text=${message}`,"_blank","noopener,noreferrer");
+    }else{
+        window.open(`https://wa.me/?text=${message}`,"_blank","noopener,noreferrer");
+        toast("WhatsApp dibuka. Isi nomor admin di ADMIN_WHATSAPP untuk direct chat.");
+    }
+
+    const trackerId=document.getElementById("trackerId");
+    const trackerStatus=document.getElementById("trackerStatus");
+    if(trackerId)trackerId.textContent=currentOrder.id;
+    if(trackerStatus)trackerStatus.textContent="WAITING FOR ADMIN";
+
+    updateTracker(0);
+    scrollToId("status");
+}
+
+
+/* ==============================
+   TRACKER
+================================ */
+
+function updateTracker(level){
+
+    for(let i=1;i<=5;i++){
+
+        const step=
+            document.getElementById(
+                "step"+i
+            );
+
+        if(!step)continue;
+
+        if(i<=level+1){
+
+            step.classList.add("done");
+
+        }else{
+
+            step.classList.remove("done");
+
+        }
+
+    }
+
+    const statuses=[
+
+        "PAYMENT",
+        "QUEUE",
+        "PROCESSING",
+        "QUALITY CHECK",
+        "COMPLETED"
+
+    ];
+
+    const status=
+        statuses[
+            Math.min(level,4)
+        ];
+
+    document.getElementById(
+        "trackerStatus"
+    ).textContent=status;
+
+}
+
+
+/* ==============================
+   FAQ
+================================ */
+
+function toggleFAQ(button){
+
+    const item=
+        button.parentElement;
+
+    item.classList.toggle("open");
+
+    const icon=
+        button.querySelector("span");
+
+    icon.textContent=
+        item.classList.contains("open")
+        ? "−"
+        : "+";
+
+}
+
+
+/* ==============================
+   ACTIVE NAV INDICATOR
+================================ */
+
+function updateNavIndicator(){
+
+    const nav=
+        document.querySelector(
+            ".nav-links"
+        );
+
+    const indicator=
+        document.getElementById(
+            "navIndicator"
+        );
+
+    const buttons=
+        [...nav.querySelectorAll(
+            "button[data-section]"
+        )];
+
+    let active=null;
+
+    const current=
+        window.scrollY+
+        window.innerHeight*.25;
+
+    buttons.forEach(button=>{
+
+        const section=
+            document.getElementById(
+                button.dataset.section
+            );
+
+        if(
+            section &&
+            section.offsetTop<=current
+        ){
+
+            active=button;
+
+        }
+
+    });
+
+    if(!active){
+
+        active=buttons[0];
+
+    }
+
+    buttons.forEach(button=>{
+        button.classList.remove("active");
+    });
+
+    active.classList.add("active");
+
+    const navRect=
+        nav.getBoundingClientRect();
+
+    const rect=
+        active.getBoundingClientRect();
+
+    indicator.style.left=
+        (rect.left-navRect.left)+"px";
+
+    indicator.style.width=
+        rect.width+"px";
+
+}
+
+window.addEventListener(
+    "scroll",
+    updateNavIndicator,
+    {passive:true}
+);
+
+window.addEventListener(
+    "resize",
+    updateNavIndicator
+);
+
+
+/* ==============================
+   SCROLL / MODAL SAFETY
+================================ */
+
+function releaseScrollLock(){
+
+    document.documentElement.classList.remove("cart-open");
+    document.body.classList.remove("cart-open");
+
+}
+
+window.addEventListener("pageshow",releaseScrollLock);
+
+document.addEventListener("visibilitychange",()=>{
+    if(document.visibilityState==="visible"){
+        releaseScrollLock();
+    }
+});
+
+
+/* ==============================
+   ADMIN CHAT
+================================ */
+
+function openAdminChat(){
+    const text=encodeURIComponent("Halo Admin FXNZZ STORE, saya ingin bertanya mengenai layanan.");
+    if(ADMIN_WHATSAPP.trim()){
+        window.open(`https://wa.me/${ADMIN_WHATSAPP.replace(/\D/g,"")}?text=${text}`,"_blank","noopener,noreferrer");
+    }else{
+        window.open(`https://wa.me/?text=${text}`,"_blank","noopener,noreferrer");
+        toast("Isi ADMIN_WHATSAPP untuk direct chat admin.");
+    }
+}
+
+
+/* ==============================
+   INIT
+================================ */
+
+renderPackages();
+
+updateCart();
+
+initMagneticButtons();
+
+setTimeout(
+    updateNavIndicator,
+    100
+);
+
+
+/* ==============================
+   BACKGROUND MUSIC
+   fxnzz.mp3 harus berada di folder yang sama dengan HTML.
+   Autoplay dicoba saat load dan diulang saat ENTER STORE,
+   karena browser dapat memblokir audio bersuara sebelum user gesture.
+================================ */
+function toggleMusic(){
+    const audio=document.getElementById("bgMusic");
+    const button=document.getElementById("musicToggle");
+    const icon=document.getElementById("musicIcon");
+    if(!audio)return;
+
+    if(audio.paused){
+        const playPromise=audio.play();
+        if(playPromise && typeof playPromise.then==="function"){
+            playPromise.then(()=>{
+                button?.classList.add("playing");
+                if(icon)icon.textContent="♫";
+            }).catch(()=>{});
+        }
+    }else{
+        audio.pause();
+        button?.classList.remove("playing");
+        if(icon)icon.textContent="♫";
+    }
+}
+
+window.addEventListener("DOMContentLoaded",()=>{
+    const audio=document.getElementById("bgMusic");
+    if(!audio)return;
+
+    audio.addEventListener("error",()=>{
+        toast("File fxnzz.mp3 tidak ditemukan atau gagal dimuat.");
+    },{once:true});
+
+    startBackgroundMusic();
+});
+</script>
+
+</body>
+</html>
